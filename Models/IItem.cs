@@ -11,7 +11,5 @@ namespace PrzeplywDokumentowWFirmie.Logic
         void Create();
         void Remove(int id);
         IItem getItemById(int id);
-
-
     }
 }

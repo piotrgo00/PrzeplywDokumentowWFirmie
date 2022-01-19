@@ -180,12 +180,10 @@
     <Compile Include="Logic\FactoryMethod\ElectronicItemCreator.cs" />
     <Compile Include="Logic\FactoryMethod\FurnitureItemCreator.cs" />
     <Compile Include="Logic\FactoryMethod\ItemCreator.cs" />
-    <Compile Include="Models\ConsumableItem.cs" />
-    <Compile Include="Models\ElectronicItem.cs" />
-    <Compile Include="Models\FurnitureItem.cs" />
     <Compile Include="Models\IItem.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ItemViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
