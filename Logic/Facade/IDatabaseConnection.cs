@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PrzeplywDokumentowWFirmie.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,11 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
 {
     interface IDatabaseConnection
     {
+        void addItem();
+        void addWarehouse();
+        void deleteItem(int id);
+
+
+        void SaveChanges();
     }
 }

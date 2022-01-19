@@ -176,10 +176,14 @@
     </Compile>
     <Compile Include="Logic\Facade\EFDatabaseConnection.cs" />
     <Compile Include="Logic\Facade\IDatabaseConnection.cs" />
-    <Compile Include="Logic\FactoryMethod\ConsumableItem.cs" />
-    <Compile Include="Logic\FactoryMethod\ElectronicItem.cs" />
-    <Compile Include="Logic\FactoryMethod\FurnitureItem.cs" />
-    <Compile Include="Logic\FactoryMethod\IItem.cs" />
+    <Compile Include="Logic\FactoryMethod\ConsumableItemCreator.cs" />
+    <Compile Include="Logic\FactoryMethod\ElectronicItemCreator.cs" />
+    <Compile Include="Logic\FactoryMethod\FurnitureItemCreator.cs" />
+    <Compile Include="Logic\FactoryMethod\ItemCreator.cs" />
+    <Compile Include="Models\ConsumableItem.cs" />
+    <Compile Include="Models\ElectronicItem.cs" />
+    <Compile Include="Models\FurnitureItem.cs" />
+    <Compile Include="Models\IItem.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
