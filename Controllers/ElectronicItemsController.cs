@@ -6,19 +6,20 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using PrzeplywDokumentowWFirmie.Logic.Facade;
+using PrzeplywDokumentowWFirmie.Logic;
+using PrzeplywDokumentowWFirmie.Logic.FactoryMethod;
 using PrzeplywDokumentowWFirmie.Models;
 
 namespace PrzeplywDokumentowWFirmie.Controllers
 {
-    public class ItemsController : Controller
+    public class ElectronicItemsController : Controller
     {
-        private IDatabaseConnection db = new EFDatabaseConnection();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: ElectronicItems
         public ActionResult Index()
         {
-            return View(db.getElectronicItems());
+            return View(db.ElectronicItems.ToList());
         }
 
         // GET: ElectronicItems/Details/5
@@ -28,7 +29,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ElectronicItem electronicItem = db.findElectronicItem((int)id);
+            ElectronicItem electronicItem = db.ElectronicItems.Find(id);
             if (electronicItem == null)
             {
                 return HttpNotFound();
@@ -51,7 +52,8 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (ModelState.IsValid)
             {
-                electronicItem.add(electronicItem); //dodanie itemu do bazy danych
+                db.ElectronicItems.Add(electronicItem);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +67,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ElectronicItem electronicItem = db.findElectronicItem((int)id);
+            ElectronicItem electronicItem = db.ElectronicItems.Find(id);
             if (electronicItem == null)
             {
                 return HttpNotFound();
@@ -96,7 +98,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ElectronicItem electronicItem = db.findElectronicItem((int)id);
+            ElectronicItem electronicItem = db.ElectronicItems.Find(id);
             if (electronicItem == null)
             {
                 return HttpNotFound();
@@ -109,9 +111,10 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ElectronicItem electronicItem = db.ElectronicItems.Find(id);
+            /*ElectronicItem electronicItem = db.ElectronicItems.Find(id);
             db.ElectronicItems.Remove(electronicItem);
-            db.SaveChanges();
+            db.SaveChanges();*/
+            FMConector.deleteItem(new ElectronicItemCreator(), id);
             return RedirectToAction("Index");
         }
 
