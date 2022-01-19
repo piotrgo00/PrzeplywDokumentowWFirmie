@@ -1,4 +1,5 @@
 ﻿using PrzeplywDokumentowWFirmie.Logic;
+using PrzeplywDokumentowWFirmie.Logic.Facade;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,53 +9,75 @@ namespace PrzeplywDokumentowWFirmie.Models
 {
     public class ElectronicItem : IItem
     {
-        public void Create()
+        public int ElectronicItemId { get; set; }
+        public string Name { get; set; }
+        public Boolean IsUsed { get; set; }
+
+        public IItem findItem(int id)
         {
-            throw new NotImplementedException();
+            IDatabaseConnection db = new EFDatabaseConnection();
+            return db.findElectronicItem(id);
         }
 
-        public IItem getItemById(int id)
+        public void delete(int id)
         {
-            throw new NotImplementedException();
+            IDatabaseConnection db = new EFDatabaseConnection();
+            db.deleteElectronicItem(id);
         }
 
-        public void Remove(int id)
+        public void add(IItem item)
         {
-            throw new NotImplementedException();
+            IDatabaseConnection db = new EFDatabaseConnection();
+            db.addElectronicItem(item);
         }
     }
     public class ConsumableItem : IItem
     {
-        public void Create()
+        public int ConsumableItemId { get; set; }
+        public string Name { get; set; }
+        public DateTime ExpirationDate { get; set; }
+
+        public IItem findItem(int id)
         {
-            throw new NotImplementedException();
+            IDatabaseConnection db = new EFDatabaseConnection();
+            return db.findConsumableItem(id);
         }
 
-        public IItem getItemById(int id)
+        public void delete(int id)
         {
-            throw new NotImplementedException();
+            IDatabaseConnection db = new EFDatabaseConnection();
+            db.deleteConsumableItem(id);
         }
 
-        public void Remove(int id)
+        public void add(IItem item)
         {
-            throw new NotImplementedException();
+            IDatabaseConnection db = new EFDatabaseConnection();
+            db.addConsumableItem(item);
         }
     }
     public class FurnitureItem : IItem
     {
-        public void Create()
+        public int FurnitureItemId { get; set; }
+        public string Name { get; set; }
+        public string Condition { get; set; }
+        public Boolean IsUsed { get; set; }
+
+        public IItem findItem(int id)
         {
-            throw new NotImplementedException();
+            IDatabaseConnection db = new EFDatabaseConnection();
+            return db.findFurnitureItem(id);
         }
 
-        public IItem getItemById(int id)
+        public void delete(int id)
         {
-            throw new NotImplementedException();
+            IDatabaseConnection db = new EFDatabaseConnection();
+            db.deleteFurnitureItem(id);
         }
 
-        public void Remove(int id)
+        public void add(IItem item)
         {
-            throw new NotImplementedException();
+            IDatabaseConnection db = new EFDatabaseConnection();
+            db.addFurnitureItem(item);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.FactoryMethod
 {
     public class ConsumableItemCreator : ItemCreator
     {
-        public override IItem CrateItem()
+        public override IItem CreateItem()
         {
             return new ConsumableItem();
         }

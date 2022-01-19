@@ -8,8 +8,8 @@ namespace PrzeplywDokumentowWFirmie.Logic
 {
     public interface IItem
     {
-        void Create();
-        void Remove(int id);
-        IItem getItemById(int id);
+        void delete(int id);
+        void add(IItem item);
+        IItem findItem(int id);
     }
 }

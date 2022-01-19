@@ -10,9 +10,20 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public void addItem()
+        public void addElectronicItem(IItem item)
         {
-            throw new NotImplementedException();
+            db.ElectronicItems.Add((ElectronicItem)item);
+            db.SaveChanges();
+        }
+        public void addConsumableItem(IItem item)
+        {
+            db.ConsumableItems.Add((ConsumableItem)item);
+            db.SaveChanges();
+        }
+        public void addFurnitureItem(IItem item)
+        {
+            db.FurnitureItems.Add((FurnitureItem)item);
+            db.SaveChanges();
         }
 
         public void addWarehouse()
@@ -20,13 +31,58 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
             throw new NotImplementedException();
         }
 
-        public void deleteItem(int id)
+        public FurnitureItem findFurnitureItem(int id)
         {
-            throw new NotImplementedException();
+            return db.FurnitureItems.Find(id);
+        }
+
+        public ConsumableItem findConsumableItem(int id)
+        {
+            return db.ConsumableItems.Find(id);
+        }
+        public ElectronicItem findElectronicItem(int id)
+        {
+            return db.ElectronicItems.Find(id);
+        }
+
+        public List<ConsumableItem> getConsumableItems()
+        {
+            return db.ConsumableItems.ToList();
+        }
+
+        public List<ElectronicItem> getElectronicItems()
+        {
+            return db.ElectronicItems.ToList();
+        }
+
+        public List<FurnitureItem> getFurnitureItems()
+        {
+            return db.FurnitureItems.ToList();
         }
 
         public void SaveChanges()
         {
+            db.SaveChanges();
+        }
+
+        public void deleteElectronicItem(int id)
+        {
+            ElectronicItem item = db.ElectronicItems.Find(id);
+            db.ElectronicItems.Remove(item);
+            db.SaveChanges();
+        }
+
+        public void deleteConsumableItem(int id)
+        {
+            ConsumableItem item = db.ConsumableItems.Find(id);
+            db.ConsumableItems.Remove(item);
+            db.SaveChanges();
+        }
+
+        public void deleteFurnitureItem(int id)
+        {
+            FurnitureItem item = db.FurnitureItems.Find(id);
+            db.FurnitureItems.Remove(item);
             db.SaveChanges();
         }
     }

@@ -9,9 +9,19 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
 {
     interface IDatabaseConnection
     {
-        void addItem();
-        void addWarehouse();
-        void deleteItem(int id);
+        List<ElectronicItem> getElectronicItems();
+        List<ConsumableItem> getConsumableItems();
+        List<FurnitureItem> getFurnitureItems();
+        ElectronicItem findElectronicItem(int id);
+        ConsumableItem findConsumableItem(int id);
+        FurnitureItem findFurnitureItem(int id);
+        void deleteElectronicItem(int id);
+        void deleteConsumableItem(int id);
+        void deleteFurnitureItem(int id);
+        void addElectronicItem(IItem item);
+        void addConsumableItem(IItem item);
+        void addFurnitureItem(IItem item);
+        void addWarehouse(); //todo
 
 
         void SaveChanges();

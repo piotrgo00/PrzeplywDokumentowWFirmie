@@ -8,7 +8,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.FactoryMethod
 {
     public class ElectronicItemCreator : ItemCreator
     {
-        public override IItem CrateItem()
+        public override IItem CreateItem()
         {
             return new ElectronicItem();
         }

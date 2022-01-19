@@ -29,5 +29,8 @@ namespace PrzeplywDokumentowWFirmie.Models
         {
             return new ApplicationDbContext();
         }
+        public DbSet<ElectronicItem> ElectronicItems { get; set; }
+        public DbSet<FurnitureItem> FurnitureItems { get; set; }
+        public DbSet<ConsumableItem> ConsumableItems { get; set; }
     }
 }
