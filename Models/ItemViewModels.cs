@@ -30,6 +30,11 @@ namespace PrzeplywDokumentowWFirmie.Models
             IDatabaseConnection db = new EFDatabaseConnection();
             db.addElectronicItem(item);
         }
+        public void edit(IItem item)
+        {
+            IDatabaseConnection db = new EFDatabaseConnection();
+            db.editElectronicItem((ElectronicItem)item);
+        }
     }
     public class ConsumableItem : IItem
     {
@@ -53,6 +58,11 @@ namespace PrzeplywDokumentowWFirmie.Models
         {
             IDatabaseConnection db = new EFDatabaseConnection();
             db.addConsumableItem(item);
+        }
+        public void edit(IItem item)
+        {
+            IDatabaseConnection db = new EFDatabaseConnection();
+            db.editFurnitureItem((FurnitureItem)item);
         }
     }
     public class FurnitureItem : IItem
@@ -78,6 +88,11 @@ namespace PrzeplywDokumentowWFirmie.Models
         {
             IDatabaseConnection db = new EFDatabaseConnection();
             db.addFurnitureItem(item);
+        }
+        public void edit(IItem item)
+        {
+            IDatabaseConnection db = new EFDatabaseConnection();
+            db.editFurnitureItem((FurnitureItem)item);
         }
     }
 }

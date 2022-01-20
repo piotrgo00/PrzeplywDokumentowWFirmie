@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PrzeplywDokumentowWFirmie.Logic;
+using PrzeplywDokumentowWFirmie.Logic.Facade;
 using PrzeplywDokumentowWFirmie.Logic.FactoryMethod;
 using PrzeplywDokumentowWFirmie.Models;
 
@@ -14,12 +15,12 @@ namespace PrzeplywDokumentowWFirmie.Controllers
 {
     public class ElectronicItemsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IDatabaseConnection db = new EFDatabaseConnection();
 
         // GET: ElectronicItems
         public ActionResult Index()
         {
-            return View(db.ElectronicItems.ToList());
+            return View(db.getElectronicItems());
         }
 
         // GET: ElectronicItems/Details/5
@@ -29,7 +30,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ElectronicItem electronicItem = db.ElectronicItems.Find(id);
+            ElectronicItem electronicItem = (ElectronicItem)FMConector.findItem(new ElectronicItemCreator(), (int)id);
             if (electronicItem == null)
             {
                 return HttpNotFound();
@@ -40,7 +41,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: ElectronicItems/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new ElectronicItem());
         }
 
         // POST: ElectronicItems/Create
@@ -52,8 +53,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.ElectronicItems.Add(electronicItem);
-                db.SaveChanges();
+                FMConector.addItem(new ElectronicItemCreator(), electronicItem);
                 return RedirectToAction("Index");
             }
 
@@ -67,7 +67,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ElectronicItem electronicItem = db.ElectronicItems.Find(id);
+            ElectronicItem electronicItem = (ElectronicItem)FMConector.findItem(new ElectronicItemCreator(), (int)id);
             if (electronicItem == null)
             {
                 return HttpNotFound();
@@ -84,8 +84,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(electronicItem).State = EntityState.Modified;
-                db.SaveChanges();
+                FMConector.editItem(new ElectronicItemCreator(), electronicItem);
                 return RedirectToAction("Index");
             }
             return View(electronicItem);
@@ -98,7 +97,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ElectronicItem electronicItem = db.ElectronicItems.Find(id);
+            ElectronicItem electronicItem = (ElectronicItem)FMConector.findItem(new ElectronicItemCreator(), (int)id);
             if (electronicItem == null)
             {
                 return HttpNotFound();
@@ -122,7 +121,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                db.dispose();
             }
             base.Dispose(disposing);
         }
