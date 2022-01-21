@@ -21,9 +21,13 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
         void addElectronicItem(IItem item);
         void addConsumableItem(IItem item);
         void addFurnitureItem(IItem item);
+        void editElectronicItem(ElectronicItem item);
+        void editConsumableItem(ConsumableItem item);
+        void editFurnitureItem(FurnitureItem item);
         void addWarehouse(); //todo
 
 
         void SaveChanges();
+        void dispose();
     }
 }
