@@ -1,0 +1,50 @@
+﻿@model PrzeplywDokumentowWFirmie.Models.Commodity
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Commodity</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ConsumableItem.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ConsumableItem.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ElectronicItem.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ElectronicItem.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FurnitureItem.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FurnitureItem.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CommodityId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

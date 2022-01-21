@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using PrzeplywDokumentowWFirmie.Logic;
 
 namespace PrzeplywDokumentowWFirmie.Models
 {
@@ -32,5 +33,6 @@ namespace PrzeplywDokumentowWFirmie.Models
         public DbSet<ElectronicItem> ElectronicItems { get; set; }
         public DbSet<FurnitureItem> FurnitureItems { get; set; }
         public DbSet<ConsumableItem> ConsumableItems { get; set; }
+        public DbSet<Commodity> Commodities { get; set; }
     }
 }

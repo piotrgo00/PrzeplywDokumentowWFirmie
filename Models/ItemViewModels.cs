@@ -12,6 +12,7 @@ namespace PrzeplywDokumentowWFirmie.Models
         public int ElectronicItemId { get; set; }
         public string Name { get; set; }
         public Boolean IsUsed { get; set; }
+        public virtual ICollection<Commodity> Commodities { get; set; }
 
         public IItem findItem(int id)
         {
@@ -41,7 +42,7 @@ namespace PrzeplywDokumentowWFirmie.Models
         public int ConsumableItemId { get; set; }
         public string Name { get; set; }
         public DateTime ExpirationDate { get; set; }
-
+        public virtual ICollection<Commodity> Commodities { get; set; }
         public IItem findItem(int id)
         {
             IDatabaseConnection db = new EFDatabaseConnection();
@@ -71,7 +72,7 @@ namespace PrzeplywDokumentowWFirmie.Models
         public string Name { get; set; }
         public string Condition { get; set; }
         public Boolean IsUsed { get; set; }
-
+        public virtual ICollection<Commodity> Commodities { get; set; }
         public IItem findItem(int id)
         {
             IDatabaseConnection db = new EFDatabaseConnection();
