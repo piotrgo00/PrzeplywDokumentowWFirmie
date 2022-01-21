@@ -17,6 +17,8 @@ namespace PrzeplywDokumentowWFirmie.Models
         public int Quantity { get => quantity; set => quantity = value; }*/
         public int CommodityId { get; set; }
         public int Quantity { get; set; }
+        public int? WarehouseId { get; set; }
+        public virtual Warehouse Warehouse { get; set; }
         public int? ElectronicItemId { get; set; }
         public virtual ElectronicItem ElectronicItem { get; set; }
         public int? FurnitureItemId { get; set; }

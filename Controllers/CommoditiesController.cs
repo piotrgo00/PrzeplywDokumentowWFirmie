@@ -17,7 +17,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Commodities
         public ActionResult Index()
         {
-            var commodities = db.Commodities.Include(c => c.ConsumableItem).Include(c => c.ElectronicItem).Include(c => c.FurnitureItem);
+            var commodities = db.Commodities.Include(c => c.ConsumableItem).Include(c => c.ElectronicItem).Include(c => c.FurnitureItem).Include(c => c.Warehouse);
             return View(commodities.ToList());
         }
 
@@ -42,6 +42,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             ViewBag.ConsumableItemId = new SelectList(db.ConsumableItems, "ConsumableItemId", "Name");
             ViewBag.ElectronicItemId = new SelectList(db.ElectronicItems, "ElectronicItemId", "Name");
             ViewBag.FurnitureItemId = new SelectList(db.FurnitureItems, "FurnitureItemId", "Name");
+            ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name");
             return View();
         }
 
@@ -50,7 +51,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CommodityId,Quantity,ElectronicItemId,FurnitureItemId,ConsumableItemId")] Commodity commodity)
+        public ActionResult Create([Bind(Include = "CommodityId,Quantity,ElectronicItemId,FurnitureItemId,ConsumableItemId,WarehouseId")] Commodity commodity)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +63,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             ViewBag.ConsumableItemId = new SelectList(db.ConsumableItems, "ConsumableItemId", "Name", commodity.ConsumableItemId);
             ViewBag.ElectronicItemId = new SelectList(db.ElectronicItems, "ElectronicItemId", "Name", commodity.ElectronicItemId);
             ViewBag.FurnitureItemId = new SelectList(db.FurnitureItems, "FurnitureItemId", "Name", commodity.FurnitureItemId);
+            ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name", commodity.WarehouseId);
             return View(commodity);
         }
 
@@ -80,6 +82,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             ViewBag.ConsumableItemId = new SelectList(db.ConsumableItems, "ConsumableItemId", "Name", commodity.ConsumableItemId);
             ViewBag.ElectronicItemId = new SelectList(db.ElectronicItems, "ElectronicItemId", "Name", commodity.ElectronicItemId);
             ViewBag.FurnitureItemId = new SelectList(db.FurnitureItems, "FurnitureItemId", "Name", commodity.FurnitureItemId);
+            ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name", commodity.WarehouseId);
             return View(commodity);
         }
 
@@ -88,7 +91,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CommodityId,Quantity,ElectronicItemId,FurnitureItemId,ConsumableItemId")] Commodity commodity)
+        public ActionResult Edit([Bind(Include = "CommodityId,Quantity,ElectronicItemId,FurnitureItemId,ConsumableItemId,WarehouseId")] Commodity commodity)
         {
             if (ModelState.IsValid)
             {
@@ -99,6 +102,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             ViewBag.ConsumableItemId = new SelectList(db.ConsumableItems, "ConsumableItemId", "Name", commodity.ConsumableItemId);
             ViewBag.ElectronicItemId = new SelectList(db.ElectronicItems, "ElectronicItemId", "Name", commodity.ElectronicItemId);
             ViewBag.FurnitureItemId = new SelectList(db.FurnitureItems, "FurnitureItemId", "Name", commodity.FurnitureItemId);
+            ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name", commodity.WarehouseId);
             return View(commodity);
         }
 

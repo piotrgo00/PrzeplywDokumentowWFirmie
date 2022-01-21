@@ -34,5 +34,6 @@ namespace PrzeplywDokumentowWFirmie.Models
         public DbSet<FurnitureItem> FurnitureItems { get; set; }
         public DbSet<ConsumableItem> ConsumableItems { get; set; }
         public DbSet<Commodity> Commodities { get; set; }
+        public DbSet<Warehouse> Warehouses { get; set; }
     }
 }
