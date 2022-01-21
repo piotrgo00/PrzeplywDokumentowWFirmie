@@ -24,6 +24,11 @@ namespace PrzeplywDokumentowWFirmie.Logic.FactoryMethod
             var item = CreateItem();
             return item.findItem(id);
         }
+        public void editItem(IItem itemToEdit)
+        {
+            var item = CreateItem();
+            item.edit(itemToEdit);
+        }
 
     }
 }

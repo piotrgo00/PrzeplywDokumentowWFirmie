@@ -1,6 +1,7 @@
 ﻿using PrzeplywDokumentowWFirmie.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -83,6 +84,29 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
         {
             FurnitureItem item = db.FurnitureItems.Find(id);
             db.FurnitureItems.Remove(item);
+            db.SaveChanges();
+        }
+
+        public void dispose()
+        {
+            db.Dispose();
+        }
+
+        public void editElectronicItem(ElectronicItem item)
+        {
+            db.Entry(item).State = EntityState.Modified;
+            db.SaveChanges();
+        }
+
+        public void editConsumableItem(ConsumableItem item)
+        {
+            db.Entry(item).State = EntityState.Modified;
+            db.SaveChanges();
+        }
+
+        public void editFurnitureItem(FurnitureItem item)
+        {
+            db.Entry(item).State = EntityState.Modified;
             db.SaveChanges();
         }
     }

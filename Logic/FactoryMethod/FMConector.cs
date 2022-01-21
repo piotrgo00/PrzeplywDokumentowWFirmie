@@ -1,4 +1,5 @@
 ﻿using PrzeplywDokumentowWFirmie.Logic.FactoryMethod;
+using PrzeplywDokumentowWFirmie.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,15 @@ namespace PrzeplywDokumentowWFirmie.Logic
         public static IItem findItem(ItemCreator creator, int id)
         {
             return creator.findItem(id);
+        }
+        public static void addItem(ItemCreator creator, IItem item)
+        {
+            creator.add(item);
+        }
+
+        internal static void editItem(ItemCreator creator, IItem item)
+        {
+            creator.editItem(item);
         }
     }
 }
