@@ -2,6 +2,7 @@
 using PrzeplywDokumentowWFirmie.Logic.Facade;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 
@@ -10,6 +11,7 @@ namespace PrzeplywDokumentowWFirmie.Models
     public class ElectronicItem : IItem
     {
         public int ElectronicItemId { get; set; }
+        [DisplayName("Item Name")]
         public string Name { get; set; }
         public Boolean IsUsed { get; set; }
         public virtual ICollection<Commodity> Commodities { get; set; }
@@ -40,6 +42,7 @@ namespace PrzeplywDokumentowWFirmie.Models
     public class ConsumableItem : IItem
     {
         public int ConsumableItemId { get; set; }
+        [DisplayName("Item Name")]
         public string Name { get; set; }
         public DateTime ExpirationDate { get; set; }
         public virtual ICollection<Commodity> Commodities { get; set; }
@@ -69,6 +72,7 @@ namespace PrzeplywDokumentowWFirmie.Models
     public class FurnitureItem : IItem
     {
         public int FurnitureItemId { get; set; }
+        [DisplayName("Item Name")]
         public string Name { get; set; }
         public string Condition { get; set; }
         public Boolean IsUsed { get; set; }
