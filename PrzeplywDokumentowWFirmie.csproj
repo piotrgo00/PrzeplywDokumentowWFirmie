@@ -177,6 +177,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\WarehousesController.cs" />
+    <Compile Include="CustomDataAnnotations\DateValidator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -224,6 +225,10 @@
     <Compile Include="Migrations\202201221430147_ivoice.cs" />
     <Compile Include="Migrations\202201221430147_ivoice.Designer.cs">
       <DependentUpon>202201221430147_ivoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201221617204_someDataAnnotation.cs" />
+    <Compile Include="Migrations\202201221617204_someDataAnnotation.Designer.cs">
+      <DependentUpon>202201221617204_someDataAnnotation.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Commodity.cs" />
@@ -356,6 +361,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201221430147_ivoice.resx">
       <DependentUpon>202201221430147_ivoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201221617204_someDataAnnotation.resx">
+      <DependentUpon>202201221617204_someDataAnnotation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

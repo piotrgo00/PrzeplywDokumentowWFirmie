@@ -1,8 +1,10 @@
-﻿using PrzeplywDokumentowWFirmie.Logic;
+﻿using PrzeplywDokumentowWFirmie.CustomDataAnnotations;
+using PrzeplywDokumentowWFirmie.Logic;
 using PrzeplywDokumentowWFirmie.Logic.Facade;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -11,6 +13,7 @@ namespace PrzeplywDokumentowWFirmie.Models
     public class ElectronicItem : IItem
     {
         public int ElectronicItemId { get; set; }
+        [Required]
         [DisplayName("Item Name")]
         public string Name { get; set; }
         public Boolean IsUsed { get; set; }
@@ -42,8 +45,13 @@ namespace PrzeplywDokumentowWFirmie.Models
     public class ConsumableItem : IItem
     {
         public int ConsumableItemId { get; set; }
+        [Required]
         [DisplayName("Item Name")]
         public string Name { get; set; }
+        [Required]
+        [DateValidator]
+        [DataType(DataType.Date)]
+        [DisplayName("Expiration Date")]
         public DateTime ExpirationDate { get; set; }
         public virtual ICollection<Commodity> Commodities { get; set; }
         public IItem findItem(int id)
@@ -72,6 +80,7 @@ namespace PrzeplywDokumentowWFirmie.Models
     public class FurnitureItem : IItem
     {
         public int FurnitureItemId { get; set; }
+        [Required]
         [DisplayName("Item Name")]
         public string Name { get; set; }
         public string Condition { get; set; }
