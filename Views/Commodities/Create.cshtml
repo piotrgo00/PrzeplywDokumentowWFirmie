@@ -87,23 +87,40 @@
     let furnitureDiv = document.getElementById("FurnitureItemSelection");
     let consumableDiv = document.getElementById("ConsumableItemSelection");
 
+    let electronicInput = document.getElementById("ElectronicItemId");
+    let furnitureInput = document.getElementById("FurnitureItemId");
+    let consumableInput = document.getElementById("ConsumableItemId");
+
+
     function typeChanged() {
         if (itemType.value === 'electronic') {
             electronicDiv.style.display = "block";
             furnitureDiv.style.display = "none";
             consumableDiv.style.display = "none";
+
+            electronicInput.disabled = false;
+            furnitureInput.disabled = true;
+            consumableInput.disabled = true;
         }
 
         if (itemType.value === 'furniture') {
             electronicDiv.style.display = "none";
             furnitureDiv.style.display = "block";
             consumableDiv.style.display = "none";
+
+            electronicInput.disabled = true;
+            furnitureInput.disabled = false;
+            consumableInput.disabled = true;
         }
 
         if (itemType.value === 'consumable') {
             electronicDiv.style.display = "none";
             furnitureDiv.style.display = "none";
             consumableDiv.style.display = "block";
+
+            electronicInput.disabled = true;
+            furnitureInput.disabled = true;
+            consumableInput.disabled = false;
         }
     }
     typeChanged();
