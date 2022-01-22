@@ -79,9 +79,6 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ConsumableItemId = new SelectList(db.ConsumableItems, "ConsumableItemId", "Name", commodity.ConsumableItemId);
-            ViewBag.ElectronicItemId = new SelectList(db.ElectronicItems, "ElectronicItemId", "Name", commodity.ElectronicItemId);
-            ViewBag.FurnitureItemId = new SelectList(db.FurnitureItems, "FurnitureItemId", "Name", commodity.FurnitureItemId);
             ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name", commodity.WarehouseId);
             return View(commodity);
         }
@@ -91,17 +88,16 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CommodityId,Quantity,ElectronicItemId,FurnitureItemId,ConsumableItemId,WarehouseId")] Commodity commodity)
+        public ActionResult Edit([Bind(Include = "CommodityId,Quantity,WarehouseId")] Commodity commodity)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(commodity).State = EntityState.Modified;
+                db.Entry(commodity).State = EntityState.Unchanged;
+                db.Entry(commodity).Property(u => u.Quantity).IsModified = true;
+                db.Entry(commodity).Property(u => u.WarehouseId).IsModified = true;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ConsumableItemId = new SelectList(db.ConsumableItems, "ConsumableItemId", "Name", commodity.ConsumableItemId);
-            ViewBag.ElectronicItemId = new SelectList(db.ElectronicItems, "ElectronicItemId", "Name", commodity.ElectronicItemId);
-            ViewBag.FurnitureItemId = new SelectList(db.FurnitureItems, "FurnitureItemId", "Name", commodity.FurnitureItemId);
             ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name", commodity.WarehouseId);
             return View(commodity);
         }
