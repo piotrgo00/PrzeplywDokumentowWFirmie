@@ -1,0 +1,51 @@
+﻿@model IEnumerable<PrzeplywDokumentowWFirmie.Models.Order>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BuyerId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Buyer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InvoiceId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Invoice)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BuyerId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Buyer)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InvoiceId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Invoice)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.OrderId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.OrderId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.OrderId })
+        </td>
+    </tr>
+}
+
+</table>

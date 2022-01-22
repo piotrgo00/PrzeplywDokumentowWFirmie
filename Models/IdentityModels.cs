@@ -30,10 +30,22 @@ namespace PrzeplywDokumentowWFirmie.Models
         {
             return new ApplicationDbContext();
         }
+
         public DbSet<ElectronicItem> ElectronicItems { get; set; }
         public DbSet<FurnitureItem> FurnitureItems { get; set; }
         public DbSet<ConsumableItem> ConsumableItems { get; set; }
         public DbSet<Commodity> Commodities { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Firm> Firms { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Order>()
+                .HasOptional(o => o.Invoice)
+                .WithRequired(i => i.Order);
+        }
     }
 }
