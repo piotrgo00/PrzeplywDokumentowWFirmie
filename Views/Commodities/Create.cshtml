@@ -11,61 +11,103 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Commodity</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
-            </div>
-        </div>
+<div class="form-horizontal">
+    <h4>Commodity</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ConsumableItemId, "WarehouseId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("WarehouseId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.WarehouseId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ElectronicItemId, "ElectronicItemId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ElectronicItemId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ElectronicItemId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.FurnitureItemId, "FurnitureItemId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("FurnitureItemId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.FurnitureItemId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ConsumableItemId, "ConsumableItemId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ConsumableItemId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ConsumableItemId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ConsumableItemId, "WarehouseId", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("WarehouseId", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.WarehouseId, "", new { @class = "text-danger" })
         </div>
     </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="itemType">Choose item type: </label>
+
+        <div class="col-md-10">
+            <select class="form-control" name="itemTypes" id="itemType" onchange="typeChanged()">
+                <option onclick="" value="electronic">Electronic</option>
+                <option onclick="" value="furniture">Furniture</option>
+                <option onclick="" value="consumable">Consumable</option>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="form-group" id="ElectronicItemSelection">
+        @Html.LabelFor(model => model.ElectronicItemId, "ElectronicItemId", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("ElectronicItemId", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ElectronicItemId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group" id="FurnitureItemSelection">
+        @Html.LabelFor(model => model.FurnitureItemId, "FurnitureItemId", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("FurnitureItemId", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.FurnitureItemId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group" id="ConsumableItemSelection">
+        @Html.LabelFor(model => model.ConsumableItemId, "ConsumableItemId", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("ConsumableItemId", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ConsumableItemId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+<script>
+    let itemType = document.getElementById("itemType");
+    let electronicDiv = document.getElementById("ElectronicItemSelection");
+    let furnitureDiv = document.getElementById("FurnitureItemSelection");
+    let consumableDiv = document.getElementById("ConsumableItemSelection");
+
+    function typeChanged() {
+        if (itemType.value === 'electronic') {
+            electronicDiv.style.display = "block";
+            furnitureDiv.style.display = "none";
+            consumableDiv.style.display = "none";
+        }
+
+        if (itemType.value === 'furniture') {
+            electronicDiv.style.display = "none";
+            furnitureDiv.style.display = "block";
+            consumableDiv.style.display = "none";
+        }
+
+        if (itemType.value === 'consumable') {
+            electronicDiv.style.display = "none";
+            furnitureDiv.style.display = "none";
+            consumableDiv.style.display = "block";
+        }
+    }
+    typeChanged();
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
