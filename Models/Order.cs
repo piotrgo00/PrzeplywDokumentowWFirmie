@@ -9,8 +9,9 @@ namespace PrzeplywDokumentowWFirmie.Models
     // context
     public class Order
     {
+        public int OrderId { get; set; }
         public Firm Buyer { get; set; }
-        public Commodity[] Commodities { get; set; }
+        public virtual ICollection<Commodity> Commodities { get; set; }
         public Invoice Invoice { get; set; }
 
         private State _state = null;
