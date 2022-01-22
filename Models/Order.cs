@@ -12,15 +12,15 @@ namespace PrzeplywDokumentowWFirmie.Models
     {
         public int OrderId { get; set; }
         public int BuyerId { get; set; }
-        public int InvoiceId { get; set; }
-
         public virtual Firm Buyer { get; set; }
+        public int? InvoiceId { get; set; }
         public virtual Invoice Invoice { get; set; }
         public virtual ICollection<Commodity> Commodities { get; set; }
         
         [NotMapped]
         private State _state = null;
 
+        public Order() { }
         public Order(State state)
         {
             this.TransitionTo(state);
