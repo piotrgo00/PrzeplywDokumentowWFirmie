@@ -230,6 +230,14 @@
     <Compile Include="Migrations\202201221617204_someDataAnnotation.Designer.cs">
       <DependentUpon>202201221617204_someDataAnnotation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202201241258186_order2.cs" />
+    <Compile Include="Migrations\202201241258186_order2.Designer.cs">
+      <DependentUpon>202201241258186_order2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201241314389_order3.cs" />
+    <Compile Include="Migrations\202201241314389_order3.Designer.cs">
+      <DependentUpon>202201241314389_order3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Commodity.cs" />
     <Compile Include="Models\Firm.cs" />
@@ -329,16 +337,16 @@
     <Content Include="Views\Warehouses\Details.cshtml" />
     <Content Include="Views\Warehouses\Edit.cshtml" />
     <Content Include="Views\Warehouses\Index.cshtml" />
-    <Content Include="Views\Orders\Create.cshtml" />
-    <Content Include="Views\Orders\Delete.cshtml" />
-    <Content Include="Views\Orders\Details.cshtml" />
-    <Content Include="Views\Orders\Edit.cshtml" />
-    <Content Include="Views\Orders\Index.cshtml" />
     <Content Include="Views\Firms\Create.cshtml" />
     <Content Include="Views\Firms\Delete.cshtml" />
     <Content Include="Views\Firms\Details.cshtml" />
     <Content Include="Views\Firms\Edit.cshtml" />
     <Content Include="Views\Firms\Index.cshtml" />
+    <Content Include="Views\Orders\Create.cshtml" />
+    <Content Include="Views\Orders\Delete.cshtml" />
+    <Content Include="Views\Orders\Details.cshtml" />
+    <Content Include="Views\Orders\Edit.cshtml" />
+    <Content Include="Views\Orders\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202201191555140_InitialCreate.resx">
@@ -364,6 +372,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201221617204_someDataAnnotation.resx">
       <DependentUpon>202201221617204_someDataAnnotation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201241258186_order2.resx">
+      <DependentUpon>202201241258186_order2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201241314389_order3.resx">
+      <DependentUpon>202201241314389_order3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

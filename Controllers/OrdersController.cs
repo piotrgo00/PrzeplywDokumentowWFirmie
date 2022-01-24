@@ -17,7 +17,8 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Orders
         public ActionResult Index()
         {
-            return View(db.Orders.ToList());
+            var orders = db.Orders.Include(o => o.Firm).Include(o => o.Invoice);
+            return View(orders.ToList());
         }
 
         // GET: Orders/Details/5
@@ -38,6 +39,8 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Orders/Create
         public ActionResult Create()
         {
+            ViewBag.FirmId = new SelectList(db.Firms, "FirmId", "Name");
+            //ViewBag.OrderId = new SelectList(db.Invoices, "InvoiceId", "InvoiceId");
             return View();
         }
 
@@ -46,7 +49,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "OrderId,BuyerId,Buyer,InvoiceId,Invoice")] Order order)
+        public ActionResult Create([Bind(Include = "OrderId,Name,FirmId,InvoiceId")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -55,6 +58,8 @@ namespace PrzeplywDokumentowWFirmie.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.FirmId = new SelectList(db.Firms, "FirmId", "Name", order.FirmId);
+            //ViewBag.OrderId = new SelectList(db.Invoices, "InvoiceId", "InvoiceId", order.OrderId);
             return View(order);
         }
 
@@ -70,6 +75,8 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.FirmId = new SelectList(db.Firms, "FirmId", "Name", order.FirmId);
+            //ViewBag.OrderId = new SelectList(db.Invoices, "InvoiceId", "InvoiceId", order.OrderId);
             return View(order);
         }
 
@@ -78,7 +85,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OrderId,BuyerId,Buyer,InvoiceId,Invoice")] Order order)
+        public ActionResult Edit([Bind(Include = "OrderId,Name,FirmId")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -86,6 +93,8 @@ namespace PrzeplywDokumentowWFirmie.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.FirmId = new SelectList(db.Firms, "FirmId", "Name", order.FirmId);
+            //ViewBag.OrderId = new SelectList(db.Invoices, "InvoiceId", "InvoiceId", order.OrderId);
             return View(order);
         }
 

@@ -25,6 +25,7 @@ namespace PrzeplywDokumentowWFirmie.Models
         public virtual FurnitureItem FurnitureItem { get; set; }
         public int? ConsumableItemId { get; set; }
         public virtual ConsumableItem ConsumableItem { get; set; }
-
+        public int? OrderId { get; set; }
+        public virtual Order Order { get; set; }
     }
 }

@@ -10,7 +10,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Order</h4>
         <hr />
@@ -18,35 +18,72 @@
         @Html.HiddenFor(model => model.OrderId)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BuyerId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BuyerId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BuyerId, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Buyer, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.FirmId, "FirmId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Buyer, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Buyer, "", new { @class = "text-danger" })
+                @Html.DropDownList("FirmId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.FirmId, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.InvoiceId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.InvoiceId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.InvoiceId, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.InvoiceId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.InvoiceId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.InvoiceId, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Invoice, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Commodities, "Commodities", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Invoice, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Invoice, "", new { @class = "text-danger" })
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Commodities.FirstOrDefault().ConsumableItem.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Commodities.FirstOrDefault().Warehouse.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Commodities.FirstOrDefault().Quantity)
+                        </th>
+                        @*<th></th>*@
+                    </tr>
+
+                    @foreach (var item in Model.Commodities)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ConsumableItem.Name)
+                                @Html.DisplayFor(modelItem => item.ElectronicItem.Name)
+                                @Html.DisplayFor(modelItem => item.FurnitureItem.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Warehouse.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </td>
+                            @*<td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.CommodityId }) |
+                                    @Html.ActionLink("Details", "Details", new { id = item.CommodityId }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.CommodityId })
+                                </td>*@
+                        </tr>
+                    }
+                </table>
             </div>
+        </div>
+        <div>
+            @Html.ActionLink("Create new Commodity", "Create", "Commodities", new { id = Model.OrderId }, null)
         </div>
 
         <div class="form-group">

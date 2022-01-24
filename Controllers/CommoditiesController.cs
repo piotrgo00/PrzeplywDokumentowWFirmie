@@ -37,8 +37,9 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         }
 
         // GET: Commodities/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
+            ViewBag.OrderId = id;
             ViewBag.ConsumableItemId = new SelectList(db.ConsumableItems, "ConsumableItemId", "Name");
             ViewBag.ElectronicItemId = new SelectList(db.ElectronicItems, "ElectronicItemId", "Name");
             ViewBag.FurnitureItemId = new SelectList(db.FurnitureItems, "FurnitureItemId", "Name");
@@ -51,13 +52,16 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CommodityId,Quantity,ElectronicItemId,FurnitureItemId,ConsumableItemId,WarehouseId")] Commodity commodity)
+        public ActionResult Create([Bind(Include = "CommodityId,Quantity,ElectronicItemId,FurnitureItemId,ConsumableItemId,WarehouseId,OrderId")] Commodity commodity)
         {
             if (ModelState.IsValid)
             {
                 db.Commodities.Add(commodity);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                if (commodity.OrderId == null)
+                    return RedirectToAction("Index");
+                else
+                    return RedirectToAction("Edit", "Orders", new { id = commodity.OrderId });
             }
 
             ViewBag.ConsumableItemId = new SelectList(db.ConsumableItems, "ConsumableItemId", "Name", commodity.ConsumableItemId);
