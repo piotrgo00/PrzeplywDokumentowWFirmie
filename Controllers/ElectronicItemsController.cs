@@ -20,7 +20,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: ElectronicItems
         public ActionResult Index()
         {
-            return View(db.getElectronicItems());
+            return View(db.getElectronicItems().ToList());
         }
 
         // GET: ElectronicItems/Details/5
@@ -110,9 +110,6 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            /*ElectronicItem electronicItem = db.ElectronicItems.Find(id);
-            db.ElectronicItems.Remove(electronicItem);
-            db.SaveChanges();*/
             FMConector.deleteItem(new ElectronicItemCreator(), id);
             return RedirectToAction("Index");
         }

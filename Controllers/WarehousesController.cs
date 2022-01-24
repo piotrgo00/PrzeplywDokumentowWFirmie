@@ -6,18 +6,19 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PrzeplywDokumentowWFirmie.Logic.Facade;
 using PrzeplywDokumentowWFirmie.Models;
 
 namespace PrzeplywDokumentowWFirmie.Controllers
 {
     public class WarehousesController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IDatabaseConnection db = new EFDatabaseConnection();
 
         // GET: Warehouses
         public ActionResult Index()
         {
-            return View(db.Warehouses.ToList());
+            return View(db.getWarehouses().ToList());
         }
 
         // GET: Warehouses/Details/5
@@ -27,7 +28,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Warehouse warehouse = db.Warehouses.Find(id);
+            Warehouse warehouse = db.findWarehouse((int)id);
             if (warehouse == null)
             {
                 return HttpNotFound();
@@ -50,8 +51,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Warehouses.Add(warehouse);
-                db.SaveChanges();
+                db.addWarehouse(warehouse);
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +65,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Warehouse warehouse = db.Warehouses.Find(id);
+            Warehouse warehouse = db.findWarehouse((int)id);
             if (warehouse == null)
             {
                 return HttpNotFound();
@@ -82,8 +82,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(warehouse).State = EntityState.Modified;
-                db.SaveChanges();
+                db.editWarehouse(warehouse);
                 return RedirectToAction("Index");
             }
             return View(warehouse);
@@ -96,7 +95,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Warehouse warehouse = db.Warehouses.Find(id);
+            Warehouse warehouse = db.findWarehouse((int)id);
             if (warehouse == null)
             {
                 return HttpNotFound();
@@ -109,9 +108,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Warehouse warehouse = db.Warehouses.Find(id);
-            db.Warehouses.Remove(warehouse);
-            db.SaveChanges();
+            db.deleteWarehouse(id);
             return RedirectToAction("Index");
         }
 
@@ -119,7 +116,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                db.dispose();
             }
             base.Dispose(disposing);
         }

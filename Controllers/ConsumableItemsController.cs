@@ -20,7 +20,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: ConsumableItems
         public ActionResult Index()
         {
-            return View(db.getConsumableItems());
+            return View(db.getConsumableItems().ToList());
         }
 
         // GET: ConsumableItems/Details/5
@@ -110,9 +110,6 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            /*ConsumableItem consumableItem = db.ConsumableItems.Find(id);
-            db.ConsumableItems.Remove(consumableItem);
-            db.SaveChanges();*/
             FMConector.deleteItem(new ConsumableItemCreator(), id);
             return RedirectToAction("Index");
         }
