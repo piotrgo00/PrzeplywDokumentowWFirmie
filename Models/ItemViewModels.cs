@@ -42,6 +42,7 @@ namespace PrzeplywDokumentowWFirmie.Models
             db.editElectronicItem((ElectronicItem)item);
         }
     }
+
     public class ConsumableItem : IItem
     {
         public int ConsumableItemId { get; set; }
@@ -77,6 +78,7 @@ namespace PrzeplywDokumentowWFirmie.Models
             db.editFurnitureItem((FurnitureItem)item);
         }
     }
+
     public class FurnitureItem : IItem
     {
         public int FurnitureItemId { get; set; }

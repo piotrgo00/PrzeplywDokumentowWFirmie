@@ -7,7 +7,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.FactoryMethod
 {
     public abstract class ItemCreator
     {
-        public abstract IItem CreateItem();
+        public abstract IItem CreateItem(); //Factory method
 
         public void delete(int id)
         {
@@ -19,12 +19,12 @@ namespace PrzeplywDokumentowWFirmie.Logic.FactoryMethod
             var item = CreateItem();
             item.add(itemToAdd);
         }
-        public IItem findItem(int id)
+        public IItem find(int id)
         {
             var item = CreateItem();
             return item.findItem(id);
         }
-        public void editItem(IItem itemToEdit)
+        public void edit(IItem itemToEdit)
         {
             var item = CreateItem();
             item.edit(itemToEdit);

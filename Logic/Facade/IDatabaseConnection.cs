@@ -39,8 +39,6 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
         void editFirm(Firm firm);
         void editWarehouse(Warehouse warehouse);
         void editCommodity(Commodity commodity);
-
-
         void SaveChanges();
         void dispose();
     }
