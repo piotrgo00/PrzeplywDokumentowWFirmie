@@ -110,9 +110,6 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            /*FurnitureItem furnitureItem = db.FurnitureItems.Find(id);
-            db.FurnitureItems.Remove(furnitureItem);
-            db.SaveChanges();*/
             FMConector.deleteItem(new FurnitureItemCreator(), id);
             return RedirectToAction("Index");
         }

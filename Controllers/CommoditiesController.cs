@@ -57,7 +57,6 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             if (ModelState.IsValid)
             {
                 db.addCommodity(commodity);
-                //db.SaveChanges();
                 if (commodity.OrderId == null)
                     return RedirectToAction("Index");
                 else
@@ -123,9 +122,6 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            /*Commodity commodity = db.Commodities.Find(id);
-            db.Commodities.Remove(commodity);
-            db.SaveChanges();*/
             db.deleteCommodity(id);
             return RedirectToAction("Index");
         }

@@ -51,8 +51,6 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (ModelState.IsValid)
             {
-                /*db.Warehouses.Add(warehouse);
-                db.SaveChanges();*/
                 db.addWarehouse(warehouse);
                 return RedirectToAction("Index");
             }
@@ -84,8 +82,6 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (ModelState.IsValid)
             {
-                /*db.Entry(warehouse).State = EntityState.Modified;
-                db.SaveChanges();*/
                 db.editWarehouse(warehouse);
                 return RedirectToAction("Index");
             }
@@ -112,9 +108,6 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            /*Warehouse warehouse = db.Warehouses.Find(id);
-            db.Warehouses.Remove(warehouse);
-            db.SaveChanges();*/
             db.deleteWarehouse(id);
             return RedirectToAction("Index");
         }
