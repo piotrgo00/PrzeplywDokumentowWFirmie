@@ -6,19 +6,19 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PrzeplywDokumentowWFirmie.Logic.Facade;
 using PrzeplywDokumentowWFirmie.Models;
 
 namespace PrzeplywDokumentowWFirmie.Controllers
 {
     public class CommoditiesController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IDatabaseConnection db = new EFDatabaseConnection();
 
         // GET: Commodities
         public ActionResult Index()
         {
-            var commodities = db.Commodities.Include(c => c.ConsumableItem).Include(c => c.ElectronicItem).Include(c => c.FurnitureItem).Include(c => c.Warehouse);
-            return View(commodities.ToList());
+            return View(db.getCommodities().ToList());
         }
 
         // GET: Commodities/Details/5
@@ -28,7 +28,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Commodity commodity = db.Commodities.Find(id);
+            Commodity commodity = db.findCommodity((int)id);
             if (commodity == null)
             {
                 return HttpNotFound();
@@ -40,10 +40,10 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         public ActionResult Create(int? id)
         {
             ViewBag.OrderId = id;
-            ViewBag.ConsumableItemId = new SelectList(db.ConsumableItems, "ConsumableItemId", "Name");
-            ViewBag.ElectronicItemId = new SelectList(db.ElectronicItems, "ElectronicItemId", "Name");
-            ViewBag.FurnitureItemId = new SelectList(db.FurnitureItems, "FurnitureItemId", "Name");
-            ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name");
+            ViewBag.ConsumableItemId = new SelectList(db.getConsumableItems(), "ConsumableItemId", "Name");
+            ViewBag.ElectronicItemId = new SelectList(db.getElectronicItems(), "ElectronicItemId", "Name");
+            ViewBag.FurnitureItemId = new SelectList(db.getFurnitureItems(), "FurnitureItemId", "Name");
+            ViewBag.WarehouseId = new SelectList(db.getWarehouses(), "WarehouseId", "Name");
             return View();
         }
 
@@ -56,18 +56,18 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Commodities.Add(commodity);
-                db.SaveChanges();
+                db.addCommodity(commodity);
+                //db.SaveChanges();
                 if (commodity.OrderId == null)
                     return RedirectToAction("Index");
                 else
                     return RedirectToAction("Edit", "Orders", new { id = commodity.OrderId });
             }
 
-            ViewBag.ConsumableItemId = new SelectList(db.ConsumableItems, "ConsumableItemId", "Name", commodity.ConsumableItemId);
-            ViewBag.ElectronicItemId = new SelectList(db.ElectronicItems, "ElectronicItemId", "Name", commodity.ElectronicItemId);
-            ViewBag.FurnitureItemId = new SelectList(db.FurnitureItems, "FurnitureItemId", "Name", commodity.FurnitureItemId);
-            ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name", commodity.WarehouseId);
+            ViewBag.ConsumableItemId = new SelectList(db.getConsumableItems(), "ConsumableItemId", "Name", commodity.ConsumableItemId);
+            ViewBag.ElectronicItemId = new SelectList(db.getElectronicItems(), "ElectronicItemId", "Name", commodity.ElectronicItemId);
+            ViewBag.FurnitureItemId = new SelectList(db.getFurnitureItems(), "FurnitureItemId", "Name", commodity.FurnitureItemId);
+            ViewBag.WarehouseId = new SelectList(db.getWarehouses(), "WarehouseId", "Name", commodity.WarehouseId);
             return View(commodity);
         }
 
@@ -78,12 +78,12 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Commodity commodity = db.Commodities.Find(id);
+            Commodity commodity = db.findCommodity((int)id);
             if (commodity == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name", commodity.WarehouseId);
+            ViewBag.WarehouseId = new SelectList(db.getWarehouses(), "WarehouseId", "Name", commodity.WarehouseId);
             return View(commodity);
         }
 
@@ -96,13 +96,10 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(commodity).State = EntityState.Unchanged;
-                db.Entry(commodity).Property(u => u.Quantity).IsModified = true;
-                db.Entry(commodity).Property(u => u.WarehouseId).IsModified = true;
-                db.SaveChanges();
+                db.editCommodity(commodity);
                 return RedirectToAction("Index");
             }
-            ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name", commodity.WarehouseId);
+            ViewBag.WarehouseId = new SelectList(db.getWarehouses(), "WarehouseId", "Name", commodity.WarehouseId);
             return View(commodity);
         }
 
@@ -113,7 +110,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Commodity commodity = db.Commodities.Find(id);
+            Commodity commodity = db.findCommodity((int)id);
             if (commodity == null)
             {
                 return HttpNotFound();
@@ -126,9 +123,10 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Commodity commodity = db.Commodities.Find(id);
+            /*Commodity commodity = db.Commodities.Find(id);
             db.Commodities.Remove(commodity);
-            db.SaveChanges();
+            db.SaveChanges();*/
+            db.deleteCommodity(id);
             return RedirectToAction("Index");
         }
 
@@ -136,7 +134,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                db.dispose();
             }
             base.Dispose(disposing);
         }

@@ -20,7 +20,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: FurnitureItems
         public ActionResult Index()
         {
-            return View(db.getFurnitureItems());
+            return View(db.getFurnitureItems().ToList());
         }
 
         // GET: FurnitureItems/Details/5

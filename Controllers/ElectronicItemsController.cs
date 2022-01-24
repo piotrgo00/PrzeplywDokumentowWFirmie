@@ -20,7 +20,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: ElectronicItems
         public ActionResult Index()
         {
-            return View(db.getElectronicItems());
+            return View(db.getElectronicItems().ToList());
         }
 
         // GET: ElectronicItems/Details/5

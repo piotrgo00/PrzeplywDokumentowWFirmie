@@ -6,18 +6,19 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PrzeplywDokumentowWFirmie.Logic.Facade;
 using PrzeplywDokumentowWFirmie.Models;
 
 namespace PrzeplywDokumentowWFirmie.Controllers
 {
     public class FirmsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private IDatabaseConnection db = new EFDatabaseConnection();
 
         // GET: Firms
         public ActionResult Index()
         {
-            return View(db.Firms.ToList());
+            return View(db.getFirms());
         }
 
         // GET: Firms/Details/5
@@ -27,7 +28,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Firm firm = db.Firms.Find(id);
+            Firm firm = db.findFirm((int)id);
             if (firm == null)
             {
                 return HttpNotFound();
@@ -50,8 +51,8 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Firms.Add(firm);
-                db.SaveChanges();
+                db.addFirm(firm);
+                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +66,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Firm firm = db.Firms.Find(id);
+            Firm firm = db.findFirm((int)id);
             if (firm == null)
             {
                 return HttpNotFound();
@@ -82,8 +83,9 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(firm).State = EntityState.Modified;
-                db.SaveChanges();
+                /*db.Entry(firm).State = EntityState.Modified;
+                db.SaveChanges();*/
+                db.editFirm(firm);
                 return RedirectToAction("Index");
             }
             return View(firm);
@@ -96,7 +98,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Firm firm = db.Firms.Find(id);
+            Firm firm = db.findFirm((int)id);
             if (firm == null)
             {
                 return HttpNotFound();
@@ -109,9 +111,10 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Firm firm = db.Firms.Find(id);
+            /*Firm firm = db.Firms.Find(id);
             db.Firms.Remove(firm);
-            db.SaveChanges();
+            db.SaveChanges();*/
+            db.deleteFirm(id);
             return RedirectToAction("Index");
         }
 
@@ -119,7 +122,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                db.dispose();
             }
             base.Dispose(disposing);
         }
