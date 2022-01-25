@@ -7,5 +7,5 @@
 
 @if (isAccepted)
 {
-    <a href="#">Realize order</a>
+    @Html.ActionLink("Realize order", "Details", new { id = orderId })
 }

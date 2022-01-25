@@ -14,9 +14,9 @@ namespace PrzeplywDokumentowWFirmie.Models
         public string Address { get; set; }
         public string Country { get; set; }
         public ICollection<Order> Orders { get; set; }
-        public bool IsLocatedAbroad(string country)
+        public bool IsLocatedAbroad()
         {
-            return country == "Polska" ? true : false;
+            return this.Country == "Polska" || this.Country == "Poland" ? false : true;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.State
     {
         public override string GetState()
         {
-            return "Not Confirmed";
+            return "Incomplete Order";
         }
         public override Invoice GetInvoice()
         {

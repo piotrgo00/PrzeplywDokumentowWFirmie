@@ -29,6 +29,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Firm firm = db.findFirm((int)id);
+            ViewBag.IsLocatedAbroad = firm.IsLocatedAbroad();
             if (firm == null)
             {
                 return HttpNotFound();
@@ -78,7 +79,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "FirmId,Name,Address")] Firm firm)
+        public ActionResult Edit([Bind(Include = "FirmId,Name,Address,Country")] Firm firm)
         {
             if (ModelState.IsValid)
             {

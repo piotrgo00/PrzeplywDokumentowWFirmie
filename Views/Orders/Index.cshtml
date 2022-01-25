@@ -36,12 +36,10 @@
             @*@Html.DisplayFor(modelItem => item.GetState())*@
             @item.GetState()
         </td>
-        <td align="center">
+        <td>
             @Html.Partial("EditButton", new ViewDataDictionary { { "id", item.OrderId}, { "isEditable", item.IsEditable()} })
             @Html.Partial("MakeOrderButton", new ViewDataDictionary { { "id", item.OrderId }, { "isAccepted", item.IsAccepted() } })
-            @Html.Partial("GetInvoiceButton", new ViewDataDictionary { { "id", item.OrderId}, { "isFinished", item.IsFinished()} })
-        </td>
-        <td>
+            @Html.Partial("GetInvoiceButton", new ViewDataDictionary { { "id", item.OrderId}, { "isFinished", item.IsFinished()} }) |
             @Html.ActionLink("Details", "Details", new { id = item.OrderId }) |
             @Html.ActionLink("Delete", "Delete", new { id = item.OrderId })
         </td>

@@ -36,6 +36,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Order order = db.Orders.Find(id);
+            order.TransitionTo(order.StateName.ToState());
             if (order == null)
             {
                 return HttpNotFound();

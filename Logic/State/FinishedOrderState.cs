@@ -11,7 +11,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.State
     {
         public override string GetState()
         {
-            return "Finished";
+            return "Finished Order";
         }
         public override Invoice GetInvoice()
         {

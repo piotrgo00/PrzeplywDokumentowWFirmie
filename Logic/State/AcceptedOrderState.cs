@@ -10,7 +10,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.State
     {
         public override string GetState()
         {
-            return "Confirmed";
+            return "Completed Order";
         }
         public override Invoice GetInvoice()
         {
@@ -23,11 +23,11 @@ namespace PrzeplywDokumentowWFirmie.Logic.State
         }
         public override bool IsAccepted()
         {
-            return false;
+            return true;
         }
         public override bool IsFinished()
         {
-            return true;
+            return false;
         }
     }
 }
