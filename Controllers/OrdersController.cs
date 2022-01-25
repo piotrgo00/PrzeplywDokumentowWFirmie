@@ -166,7 +166,26 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return HttpNotFound();
             }
-
+            List<Commodity> commodities = db.getCommoditiesFromOrder((int)id).ToList();
+            List<Commodity> notEnoughInWarehouseCommodities = new List<Commodity>();
+            foreach(Commodity commodity in commodities) //find if it's possible to complete order
+            {
+                Commodity commodityFromWarehouse = db.findCommodityFromWarehouse(commodity);
+                if (commodity.Quantity > commodityFromWarehouse.Quantity)
+                {
+                    notEnoughInWarehouseCommodities.Add(commodity);
+                }
+            }
+            if(notEnoughInWarehouseCommodities.Count != 0)
+            {
+                return RedirectToAction("Index"); //todo
+            }
+            foreach (Commodity commodity in commodities) //complete possible order by reducing quantity of chosen commodities
+            {
+                Commodity commodityFromWarehouse = db.findCommodityFromWarehouse(commodity);
+                commodityFromWarehouse.Quantity -= commodity.Quantity;
+                db.editCommodityFull(commodityFromWarehouse);
+            }
             order.TransitionTo(OrderState.FinishedOrder);
             db.editOrder(order);
 

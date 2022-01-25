@@ -95,6 +95,16 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
             return db.Commodities.Find(id);
         }
 
+        public Commodity findCommodityFromWarehouse(Commodity commodity)
+        {
+            return db.Commodities.Where(c => c.ConsumableItemId == commodity.ConsumableItemId)
+                .Where(c => c.FurnitureItemId == commodity.FurnitureItemId)
+                .Where(c => c.ElectronicItemId == commodity.ElectronicItemId)
+                .Where(c => c.WarehouseId == commodity.Order.WarehouseId)
+                .Where(c => c.OrderId == null)
+                .FirstOrDefault();
+        }
+
         public Firm findFirm(int id)
         {
             return db.Firms.Find(id);
@@ -130,6 +140,11 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
         public IQueryable<Commodity> getCommodities()
         {
             return db.Commodities.Include(c => c.ConsumableItem).Include(c => c.ElectronicItem).Include(c => c.FurnitureItem).Include(c => c.Warehouse).Where(c => c.OrderId == null);
+        }
+
+        public IQueryable<Commodity> getCommoditiesFromOrder(int orderId)
+        {
+            return db.Commodities.Where(c => c.OrderId == orderId);
         }
 
         public IQueryable<Firm> getFirms()
@@ -260,11 +275,17 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
             this.SaveChanges();
         }
 
-        public void editCommodity(Commodity commodity)
+        public void editCommodityPartial(Commodity commodity)
         {
             db.Entry(commodity).State = EntityState.Unchanged;
             db.Entry(commodity).Property(u => u.Quantity).IsModified = true;
             db.Entry(commodity).Property(u => u.WarehouseId).IsModified = true;
+            this.SaveChanges();
+        }
+
+        public void editCommodityFull(Commodity commodity)
+        {
+            db.Entry(commodity).State = EntityState.Modified;
             this.SaveChanges();
         }
 

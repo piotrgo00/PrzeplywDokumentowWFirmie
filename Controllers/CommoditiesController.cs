@@ -95,7 +95,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.editCommodity(commodity);
+                db.editCommodityPartial(commodity);
                 return RedirectToAction("Index");
             }
             ViewBag.WarehouseId = new SelectList(db.getWarehouses(), "WarehouseId", "Name", commodity.WarehouseId);

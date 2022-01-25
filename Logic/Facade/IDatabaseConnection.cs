@@ -13,6 +13,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
         IQueryable<ConsumableItem> getConsumableItems();
         IQueryable<FurnitureItem> getFurnitureItems();
         IQueryable<Commodity> getCommodities();
+        IQueryable<Commodity> getCommoditiesFromOrder(int id);
         IQueryable<Firm> getFirms();
         IQueryable<Warehouse> getWarehouses();
         IQueryable<Order> getOrders();
@@ -20,6 +21,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
         ConsumableItem findConsumableItem(int id);
         FurnitureItem findFurnitureItem(int id);
         Commodity findCommodity(int id);
+        Commodity findCommodityFromWarehouse(Commodity commodity);
         Firm findFirm(int id);
         Warehouse findWarehouse(int id);
         Order findOrder(int id);
@@ -42,7 +44,8 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
         void editFurnitureItem(FurnitureItem item);
         void editFirm(Firm firm);
         void editWarehouse(Warehouse warehouse);
-        void editCommodity(Commodity commodity);
+        void editCommodityPartial(Commodity commodity);
+        void editCommodityFull(Commodity commodity);
         void editOrder(Order order);
         void SaveChanges();
         void dispose();
