@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace PrzeplywDokumentowWFirmie.Logic.AbstractFactory
 {
     public class ForeignInvoiceFactory : InvoiceAbstractFactory
     {
+        //Returns the invoice as a HTML document
         public string getHTML(Models.Order order)
         {
             string toReturn = "";
@@ -18,11 +18,6 @@ namespace PrzeplywDokumentowWFirmie.Logic.AbstractFactory
 
 
             return toReturn;
-        }
-
-        public Invoice GetInvoice()
-        {
-            throw new System.NotImplementedException();
         }
 
 

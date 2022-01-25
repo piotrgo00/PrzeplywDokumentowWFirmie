@@ -20,11 +20,6 @@ namespace PrzeplywDokumentowWFirmie.Logic.AbstractFactory
             return toReturn;
         }
 
-        public Invoice GetInvoice()
-        {
-            throw new System.NotImplementedException();
-        }
-
 
 
         //Returns HTML code responsible for writing out invoice recipient info
