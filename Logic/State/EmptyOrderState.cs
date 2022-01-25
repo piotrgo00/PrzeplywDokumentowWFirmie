@@ -12,10 +12,9 @@ namespace PrzeplywDokumentowWFirmie.Logic.State
         {
             return "Incomplete Order";
         }
-        public override Invoice GetInvoice()
+        public override IHtmlString GetInvoice()
         {
-            // some logic returning Invoice in Order that's still being prepared
-            return new Invoice(/* ProcessedInvoice */);
+            return new HtmlString("");
         }
         public override bool IsEditable()
         {

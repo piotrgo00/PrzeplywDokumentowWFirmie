@@ -22,7 +22,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Orders
         public ActionResult Index()
         {
-            var orders = db.getOrders().ToList();
+            var orders = db.getOrders().OrderByDescending(or => or.StateName).ToList();
 
             foreach (var order in orders)
             {
@@ -207,8 +207,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
                 return HttpNotFound();
             }
 
-            IHtmlString htmlString = GetInvoice(order, !order.Firm.IsLocatedAbroad());
-
+            IHtmlString htmlString = order.GetInvoice();
 
             ViewBag.htmlString = htmlString;
             ViewBag.orderId = order.OrderId;
@@ -217,23 +216,6 @@ namespace PrzeplywDokumentowWFirmie.Controllers
 
             return View(order);
         }
-
-        //Returns the invoice as a file
-        public IHtmlString GetInvoice(Order order, bool domestic)
-        {
-            InvoiceAbstractFactory factory;
-            if (domestic)
-                factory = new DomesticInvoiceFactory();
-            else
-                factory = new ForeignInvoiceFactory();
-
-           // byte[] bytes = PdfSharpConvert(factory.getHTML(order));
-           // string fileName = $"Invoice_{order.OrderId}_{order.Name}.pdf";
-
-            return new HtmlString(factory.getHTML(order));
-            //return File(bytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
-        }
-
         public FileResult DownloadInvoice(int id, bool domestic)
         {
             Order order = db.findOrder((int)id);
@@ -257,7 +239,8 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             byte[] res = null;
             using (MemoryStream ms = new MemoryStream())
             {
-                var pdf = PdfSharp.PdfGenerator.GeneratePdf(html, PdfSharp.PageSize.A4);
+                
+                var pdf = TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(html, PdfSharp.PageSize.A4);
                 pdf.Save(ms);
                 res = ms.ToArray();
             }

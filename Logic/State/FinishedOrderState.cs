@@ -1,4 +1,5 @@
-﻿using PrzeplywDokumentowWFirmie.Models;
+﻿using PrzeplywDokumentowWFirmie.Logic.AbstractFactory;
+using PrzeplywDokumentowWFirmie.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,15 @@ namespace PrzeplywDokumentowWFirmie.Logic.State
         {
             return "Finished Order";
         }
-        public override Invoice GetInvoice()
+        public override IHtmlString GetInvoice()
         {
-            // Retrurning Invoice in case of finished Order
-            return new Invoice();
+            InvoiceAbstractFactory factory;
+            if (this._order.Firm.IsLocatedAbroad())
+                factory = new ForeignInvoiceFactory();
+            else
+                factory = new DomesticInvoiceFactory();
+
+            return new HtmlString(factory.getHTML(_order));
         }
         public override bool IsEditable()
         {

@@ -4,10 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using PrzeplywDokumentowWFirmie.Logic.State;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
@@ -73,7 +70,7 @@ namespace PrzeplywDokumentowWFirmie.Models
         {
             return this._state.GetState();
         }
-        public Invoice GetInvoice()
+        public IHtmlString GetInvoice()
         {
             return this._state.GetInvoice();
         }
