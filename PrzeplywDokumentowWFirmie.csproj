@@ -373,6 +373,7 @@
     <Content Include="Views\Orders\EditButton.cshtml" />
     <Content Include="Views\Orders\MakeOrderButton.cshtml" />
     <Content Include="Views\Orders\GetInvoiceButton.cshtml" />
+    <Content Include="Views\Orders\Invoice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202201191555140_InitialCreate.resx">

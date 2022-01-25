@@ -194,9 +194,51 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             return RedirectToAction("Index");
         }
 
-        //Returns the invoice as a file
-        public FileResult GetInvoice(Order order, bool domestic)
+        public ActionResult Invoice(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Order order = db.findOrder((int)id);
+            order.TransitionTo(order.StateName);
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+
+            IHtmlString htmlString = GetInvoice(order, !order.Firm.IsLocatedAbroad());
+
+
+            ViewBag.htmlString = htmlString;
+            ViewBag.orderId = order.OrderId;
+            ViewBag.domestic = !order.Firm.IsLocatedAbroad();
+            ViewBag.order = order;
+
+            return View(order);
+        }
+
+        //Returns the invoice as a file
+        public IHtmlString GetInvoice(Order order, bool domestic)
+        {
+            InvoiceAbstractFactory factory;
+            if (domestic)
+                factory = new DomesticInvoiceFactory();
+            else
+                factory = new ForeignInvoiceFactory();
+
+           // byte[] bytes = PdfSharpConvert(factory.getHTML(order));
+           // string fileName = $"Invoice_{order.OrderId}_{order.Name}.pdf";
+
+            return new HtmlString(factory.getHTML(order));
+            //return File(bytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
+
+        public FileResult DownloadInvoice(int id, bool domestic)
+        {
+            Order order = db.findOrder((int)id);
+            order.TransitionTo(order.StateName);
+
             InvoiceAbstractFactory factory;
             if (domestic)
                 factory = new DomesticInvoiceFactory();
@@ -215,7 +257,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             byte[] res = null;
             using (MemoryStream ms = new MemoryStream())
             {
-                var pdf = TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(html, PdfSharp.PageSize.A4);
+                var pdf = PdfSharp.PdfGenerator.GeneratePdf(html, PdfSharp.PageSize.A4);
                 pdf.Save(ms);
                 res = ms.ToArray();
             }

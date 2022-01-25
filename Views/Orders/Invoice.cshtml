@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Invoice";
+
+}
+
+
+
+<h2>Invoice</h2>
+
+
+
+@Html.Raw(ViewBag.htmlString)
+
+
+@Html.ActionLink("Download Invoice", "DownloadInvoice", new { id = ViewBag.orderId, domestic = ViewBag.domestic })

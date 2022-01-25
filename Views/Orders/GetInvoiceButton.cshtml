@@ -7,5 +7,5 @@
 
 @if (isFinished)
 {
-    <a href="#">Get invoice</a>
+    @Html.ActionLink("Get Invoice", "Invoice", new { id = orderId })
 }
