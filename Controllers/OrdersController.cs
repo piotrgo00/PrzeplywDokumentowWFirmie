@@ -193,5 +193,33 @@ namespace PrzeplywDokumentowWFirmie.Controllers
 
             return RedirectToAction("Index");
         }
+
+        //Returns the invoice as a file
+        public FileResult GetInvoice(Order order, bool domestic)
+        {
+            InvoiceAbstractFactory factory;
+            if (domestic)
+                factory = new DomesticInvoiceFactory();
+            else
+                factory = new ForeignInvoiceFactory();
+
+            byte[] bytes = PdfSharpConvert(factory.getHTML(order));
+            string fileName = $"Invoice_{order.OrderId}_{order.Name}.pdf";
+
+            return File(bytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
+
+        //Returns a PDF file generated from given HTML code
+        private byte[] PdfSharpConvert(string html)
+        {
+            byte[] res = null;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                var pdf = TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(html, PdfSharp.PageSize.A4);
+                pdf.Save(ms);
+                res = ms.ToArray();
+            }
+            return res;
+        }
     }
 }
