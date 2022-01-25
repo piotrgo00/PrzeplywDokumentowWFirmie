@@ -14,6 +14,9 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        /*******************************************************/
+        /*                    add methods                      */
+        /*******************************************************/
         public void addElectronicItem(IItem item)
         {
             db.ElectronicItems.Add((ElectronicItem)item);
@@ -56,6 +59,9 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
             this.SaveChanges();
         }
 
+        /*******************************************************/
+        /*           find single item by id methods            */
+        /*******************************************************/
         public FurnitureItem findFurnitureItem(int id)
         {
             return db.FurnitureItems.Find(id);
@@ -89,6 +95,10 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
         {
             return db.Orders.Find(id);
         }
+
+        /*******************************************************/
+        /*          get all items from table methods           */
+        /*******************************************************/
         public IQueryable<ConsumableItem> getConsumableItems()
         {
             return db.ConsumableItems;
@@ -129,6 +139,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
             return db.Orders;
         }
 
+        //save changes
         [HandleError(View = "Error")]
         public void SaveChanges()
         {
@@ -144,6 +155,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
                 {
                     var number = sqlException.Number;
 
+                    //Possible to add more error handling
                     if (number == 547)
                     {
                         throw new Exception("Must delete Commodities before Items");
@@ -156,6 +168,9 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
             }
         }
 
+        /*******************************************************/
+        /*                  delete methods                     */
+        /*******************************************************/
         public void deleteElectronicItem(int id)
         {
             ElectronicItem item = db.ElectronicItems.Find(id);
@@ -202,11 +217,15 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
             this.SaveChanges();
         }
 
-        public void dispose()
+        //delete all data database
+        public void dispose() 
         {
             db.Dispose();
         }
 
+        /*******************************************************/
+        /*                  edit methods                       */
+        /*******************************************************/
         public void editElectronicItem(ElectronicItem item)
         {
             db.Entry(item).State = EntityState.Modified;

@@ -110,9 +110,6 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            /*ElectronicItem electronicItem = db.ElectronicItems.Find(id);
-            db.ElectronicItems.Remove(electronicItem);
-            db.SaveChanges();*/
             FMConector.deleteItem(new ElectronicItemCreator(), id);
             return RedirectToAction("Index");
         }

@@ -52,7 +52,6 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             if (ModelState.IsValid)
             {
                 db.addFirm(firm);
-                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -83,8 +82,6 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (ModelState.IsValid)
             {
-                /*db.Entry(firm).State = EntityState.Modified;
-                db.SaveChanges();*/
                 db.editFirm(firm);
                 return RedirectToAction("Index");
             }
@@ -111,9 +108,6 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            /*Firm firm = db.Firms.Find(id);
-            db.Firms.Remove(firm);
-            db.SaveChanges();*/
             db.deleteFirm(id);
             return RedirectToAction("Index");
         }
