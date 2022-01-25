@@ -58,14 +58,15 @@ namespace PrzeplywDokumentowWFirmie.Models
         // constructor for EntityFramework
         public Order() { }
      
-        public Order(OrderState state)
+        public Order(OrderState stateName)
         {
-            this.StateName = state;
-            this.TransitionTo(state.ToState());
+            this.StateName = stateName;
+            this.TransitionTo(stateName);
         }
-        public void TransitionTo(State state)
+        public void TransitionTo(OrderState stateName)
         {
-            this._state = state;
+            this._state = stateName.ToState();
+            this.StateName = stateName;
             this._state.SetOrder(this);
         }
         public string GetState()

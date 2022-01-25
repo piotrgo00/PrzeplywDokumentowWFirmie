@@ -53,7 +53,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
         }
         public void addOrder(Order order)
         {
-            order.TransitionTo(order.StateName.ToState());
+            order.TransitionTo(order.StateName);
 
             db.Orders.Add(order);
             this.SaveChanges();
@@ -134,7 +134,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
 
             foreach (var order in orders)
             {
-                order.TransitionTo(order.StateName.ToState());
+                order.TransitionTo(order.StateName);
             }
             return db.Orders;
         }

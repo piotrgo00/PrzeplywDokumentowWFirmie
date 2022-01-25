@@ -22,7 +22,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
 
             foreach (var order in orders)
             {
-                order.TransitionTo(order.StateName.ToState());
+                order.TransitionTo(order.StateName);
             }
 
             return View(orders);
@@ -36,7 +36,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Order order = db.Orders.Find(id);
-            order.TransitionTo(order.StateName.ToState());
+            order.TransitionTo(order.StateName);
             if (order == null)
             {
                 return HttpNotFound();
@@ -83,7 +83,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return HttpNotFound();
             }
-            order.TransitionTo(order.StateName.ToState());
+            order.TransitionTo(order.StateName);
             if (!order.IsEditable())
             {
                 return HttpNotFound();
@@ -102,7 +102,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (ModelState.IsValid)
             {
-                order.TransitionTo(new AcceptedOrderState());
+                order.TransitionTo(OrderState.AcceptedOrder);
                 order.StateName = OrderState.AcceptedOrder;
 
                 db.Entry(order).State = EntityState.Modified;
@@ -147,6 +147,30 @@ namespace PrzeplywDokumentowWFirmie.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult RealizeOrder(int id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Order order = db.Orders.Find(id);
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            order.TransitionTo(order.StateName);
+            if (!order.IsAccepted())
+            {
+                return HttpNotFound();
+            }
+
+            order.TransitionTo(OrderState.FinishedOrder);
+            db.Entry(order).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }
