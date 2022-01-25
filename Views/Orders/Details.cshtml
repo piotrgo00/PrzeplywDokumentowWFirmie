@@ -27,14 +27,6 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.InvoiceId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.InvoiceId)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.Commodities)
         </dt>
 
@@ -68,16 +60,20 @@
                             @Html.DisplayFor(modelItem => item.Quantity)
                         </td>
                         @*<td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.CommodityId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.CommodityId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.CommodityId })
-                </td>*@
+                                @Html.ActionLink("Edit", "Edit", new { id = item.CommodityId }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.CommodityId }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.CommodityId })
+                            </td>*@
                     </tr>
                 }
             </table>
         </dd>
 
+        <div align="center">
+            @Html.Partial("MakeOrderButton", new ViewDataDictionary { { "id", Model.OrderId }, { "isAccepted", Model.IsAccepted() } })
+        </div>
     </dl>
+
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.OrderId }) |

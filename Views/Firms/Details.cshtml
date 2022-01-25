@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Details";
+    
 }
 
 <h2>Details</h2>
@@ -24,6 +25,22 @@
 
         <dd>
             @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Country)
+        </dd>
+
+        <dt>
+            <span>Is located abroad?</span>
+        </dt>
+
+        <dd>
+            @Model.IsLocatedAbroad()
         </dd>
 
     </dl>

@@ -9,18 +9,27 @@ using System.Web;
 using System.Web.Mvc;
 using PrzeplywDokumentowWFirmie.Logic.AbstractFactory;
 using PrzeplywDokumentowWFirmie.Models;
+using PrzeplywDokumentowWFirmie.Logic.State;
+using PrzeplywDokumentowWFirmie.Logic.Facade;
 
 namespace PrzeplywDokumentowWFirmie.Controllers
 {
     public class OrdersController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        //private ApplicationDbContext db = new ApplicationDbContext();
+        private IDatabaseConnection db = new EFDatabaseConnection();
 
         // GET: Orders
         public ActionResult Index()
         {
-            var orders = db.Orders.Include(o => o.Firm).Include(o => o.Invoice);
-            return View(orders.ToList());
+            var orders = db.getOrders().ToList();
+
+            foreach (var order in orders)
+            {
+                order.TransitionTo(order.StateName);
+            }
+
+            return View(orders);
         }
 
         // GET: Orders/Details/5
@@ -30,7 +39,8 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            Order order = db.findOrder((int)id);
+            order.TransitionTo(order.StateName);
             if (order == null)
             {
                 return HttpNotFound();
@@ -41,8 +51,9 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Orders/Create
         public ActionResult Create()
         {
-            ViewBag.FirmId = new SelectList(db.Firms, "FirmId", "Name");
+            ViewBag.FirmId = new SelectList(db.getFirms(), "FirmId", "Name");
             //ViewBag.OrderId = new SelectList(db.Invoices, "InvoiceId", "InvoiceId");
+            ViewBag.WarehouseId = new SelectList(db.getWarehouses(), "WarehouseId", "Name");
             return View();
         }
 
@@ -51,16 +62,16 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "OrderId,Name,FirmId,InvoiceId")] Order order)
+        public ActionResult Create([Bind(Include = "OrderId,Name,FirmId,WarehouseId")] Order order)
         {
             if (ModelState.IsValid)
             {
-                db.Orders.Add(order);
-                db.SaveChanges();
+                db.addOrder(order);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.FirmId = new SelectList(db.Firms, "FirmId", "Name", order.FirmId);
+            ViewBag.FirmId = new SelectList(db.getFirms(), "FirmId", "Name", order.FirmId);
+            ViewBag.WarehouseId = new SelectList(db.getWarehouses(), "WarehouseId", "Name", order.WarehouseId);
             //ViewBag.OrderId = new SelectList(db.Invoices, "InvoiceId", "InvoiceId", order.OrderId);
             return View(order);
         }
@@ -72,12 +83,18 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            Order order = db.findOrder((int)id);
             if (order == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.FirmId = new SelectList(db.Firms, "FirmId", "Name", order.FirmId);
+            order.TransitionTo(order.StateName);
+            if (!order.IsEditable())
+            {
+                return HttpNotFound();
+            }
+            ViewBag.FirmId = new SelectList(db.getFirms(), "FirmId", "Name", order.FirmId);
+            ViewBag.WarehouseId = new SelectList(db.getWarehouses(), "WarehouseId", "Name", order.WarehouseId);
             //ViewBag.OrderId = new SelectList(db.Invoices, "InvoiceId", "InvoiceId", order.OrderId);
             return View(order);
         }
@@ -87,15 +104,17 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OrderId,Name,FirmId")] Order order)
+        public ActionResult Edit([Bind(Include = "OrderId,Name,FirmId,WarehouseId")] Order order)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(order).State = EntityState.Modified;
-                db.SaveChanges();
+                order.TransitionTo(OrderState.AcceptedOrder);
+                order.StateName = OrderState.AcceptedOrder;
+                db.editOrder(order);
                 return RedirectToAction("Index");
             }
-            ViewBag.FirmId = new SelectList(db.Firms, "FirmId", "Name", order.FirmId);
+            ViewBag.FirmId = new SelectList(db.getFirms(), "FirmId", "Name", order.FirmId);
+            ViewBag.WarehouseId = new SelectList(db.getWarehouses(), "WarehouseId", "Name", order.WarehouseId);
             //ViewBag.OrderId = new SelectList(db.Invoices, "InvoiceId", "InvoiceId", order.OrderId);
             return View(order);
         }
@@ -107,7 +126,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            Order order = db.findOrder((int)id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -120,9 +139,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Order order = db.Orders.Find(id);
-            db.Orders.Remove(order);
-            db.SaveChanges();
+            db.deleteOrder(id);
             return RedirectToAction("Index");
         }
 
@@ -130,37 +147,51 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                db.dispose();
             }
             base.Dispose(disposing);
         }
 
-        //TODO COMMENT
-        public FileResult GetInvoice(Order order, bool domestic)
+        public ActionResult RealizeOrder(int? id)
         {
-            InvoiceAbstractFactory factory;
-            if (domestic)
-                factory = new DomesticInvoiceFactory();
-            else
-                factory = new ForeignInvoiceFactory();
-
-            byte[] bytes = PdfSharpConvert(factory.getHTML(order));
-            string fileName = $"Invoice_{order.OrderId}_{order.Name}.pdf";
-
-            return File(bytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
-        }
-
-        //Returns a PDF file generated from given HTML code
-        private byte[] PdfSharpConvert(string html)
-        {
-            byte[] res = null;
-            using (MemoryStream ms = new MemoryStream())
+            if (id == null)
             {
-                var pdf = TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(html, PdfSharp.PageSize.A4);
-                pdf.Save(ms);
-                res = ms.ToArray();
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            return res;
+            Order order = db.findOrder((int)id);
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            order.TransitionTo(order.StateName);
+            if (!order.IsAccepted())
+            {
+                return HttpNotFound();
+            }
+            List<Commodity> commodities = db.getCommoditiesFromOrder((int)id).ToList();
+            List<Commodity> notEnoughInWarehouseCommodities = new List<Commodity>();
+            foreach(Commodity commodity in commodities) //find if it's possible to complete order
+            {
+                Commodity commodityFromWarehouse = db.findCommodityFromWarehouse(commodity);
+                if (commodity.Quantity > commodityFromWarehouse.Quantity)
+                {
+                    notEnoughInWarehouseCommodities.Add(commodity);
+                }
+            }
+            if(notEnoughInWarehouseCommodities.Count != 0)
+            {
+                return RedirectToAction("Index"); //todo
+            }
+            foreach (Commodity commodity in commodities) //complete possible order by reducing quantity of chosen commodities
+            {
+                Commodity commodityFromWarehouse = db.findCommodityFromWarehouse(commodity);
+                commodityFromWarehouse.Quantity -= commodity.Quantity;
+                db.editCommodityFull(commodityFromWarehouse);
+            }
+            order.TransitionTo(OrderState.FinishedOrder);
+            db.editOrder(order);
+
+            return RedirectToAction("Index");
         }
     }
 }

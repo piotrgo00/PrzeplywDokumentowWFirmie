@@ -39,12 +39,20 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @if (ViewBag.OrderId == null)
+            {
+                @Html.ActionLink("Back to List", "Index")
+            }
+            else
+            {
+                @Html.ActionLink("Back to Order", "Edit", "Orders", new { id = ViewBag.OrderId }, null)
+            }
         </div>
     }
 </div>
