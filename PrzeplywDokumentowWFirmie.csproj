@@ -196,7 +196,6 @@
     </Compile>
     <Compile Include="Logic\AbstractFactory\DomesticInvoiceFactory.cs" />
     <Compile Include="Logic\AbstractFactory\ForeignInvoiceFactory.cs" />
-    <Compile Include="Logic\AbstractFactory\Invoice.cs" />
     <Compile Include="Logic\AbstractFactory\InvoiceAbstractFactory.cs" />
     <Compile Include="Logic\Facade\EFDatabaseConnection.cs" />
     <Compile Include="Logic\Facade\IDatabaseConnection.cs" />
