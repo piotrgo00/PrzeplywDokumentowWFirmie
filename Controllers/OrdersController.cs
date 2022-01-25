@@ -239,7 +239,6 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             byte[] res = null;
             using (MemoryStream ms = new MemoryStream())
             {
-                
                 var pdf = TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(html, PdfSharp.PageSize.A4);
                 pdf.Save(ms);
                 res = ms.ToArray();
