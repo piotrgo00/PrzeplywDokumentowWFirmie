@@ -149,7 +149,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult RealizeOrder(int id)
+        public ActionResult RealizeOrder(int? id)
         {
             if (id == null)
             {
