@@ -48,9 +48,27 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
 
         public void addCommodity(Commodity commodity)
         {
+            Commodity commodity1;
+            if (commodity.OrderId == null && commodity.WarehouseId != null) //check if commodity is from order or from warehouse
+            {
+                commodity1 = db.Commodities.Where(c => c.ConsumableItemId == commodity.ConsumableItemId)
+                    .Where(c => c.FurnitureItemId == commodity.FurnitureItemId)
+                    .Where(c => c.ElectronicItemId == commodity.ElectronicItemId)
+                    .Where(c => c.WarehouseId == commodity.WarehouseId)
+                    .Where(c => c.OrderId == null)
+                    .FirstOrDefault();
+                if(commodity1 != null) //check if commodity of the same type already exists
+                {
+                    commodity1.Quantity = commodity1.Quantity + commodity.Quantity;
+                    db.Entry(commodity1).State = EntityState.Modified;
+                    this.SaveChanges();
+                    return;
+                }
+            }
             db.Commodities.Add(commodity);
             this.SaveChanges();
         }
+
         public void addOrder(Order order)
         {
             order.TransitionTo(order.StateName);
@@ -128,6 +146,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
         {
             return db.Warehouses;
         }
+
         public IQueryable<Order> getOrders()
         {
             var orders = db.Orders.Include(o => o.Firm).Include(o => o.Invoice).ToList();
@@ -198,27 +217,35 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
             db.Commodities.Remove(commodity);
             this.SaveChanges();
         }
+
         public void deleteFirm(int id)
         {
             Firm firm = db.Firms.Find(id);
             db.Firms.Remove(firm);
             this.SaveChanges();
         }
+
         public void deleteWarehouse(int id)
         {
             Warehouse warehouse = db.Warehouses.Find(id);
             db.Warehouses.Remove(warehouse);
             this.SaveChanges();
         }
+
         public void deleteOrder(int id)
         {
             Order order = db.Orders.Find(id);
+            var commodities = db.Commodities.Where(c => c.OrderId == id);
+            foreach(var commodity in commodities)
+            {
+                db.Commodities.Remove(commodity);
+            }
             db.Orders.Remove(order);
             this.SaveChanges();
         }
 
         //delete all data database
-        public void dispose() 
+        public void dispose()
         {
             db.Dispose();
         }
@@ -251,6 +278,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
             db.Entry(commodity).Property(u => u.WarehouseId).IsModified = true;
             this.SaveChanges();
         }
+
         public void editFirm(Firm firm)
         {
             db.Entry(firm).State = EntityState.Modified;
@@ -262,6 +290,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
             db.Entry(warehouse).State = EntityState.Modified;
             this.SaveChanges();
         }
+
         public void editOrder(Order order)
         {
             db.Entry(order).State = EntityState.Modified;

@@ -8,12 +8,14 @@ using System.Web;
 using System.Web.Mvc;
 using PrzeplywDokumentowWFirmie.Models;
 using PrzeplywDokumentowWFirmie.Logic.State;
+using PrzeplywDokumentowWFirmie.Logic.Facade;
 
 namespace PrzeplywDokumentowWFirmie.Controllers
 {
     public class OrdersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private IDatabaseConnection db1 = new EFDatabaseConnection();
 
         // GET: Orders
         public ActionResult Index()
@@ -134,9 +136,10 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Order order = db.Orders.Find(id);
+            /*Order order = db.Orders.Find(id);
             db.Orders.Remove(order);
-            db.SaveChanges();
+            db.SaveChanges();*/
+            db1.deleteOrder(id);
             return RedirectToAction("Index");
         }
 
