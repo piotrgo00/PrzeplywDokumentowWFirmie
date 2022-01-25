@@ -14,13 +14,13 @@ namespace PrzeplywDokumentowWFirmie.Controllers
 {
     public class OrdersController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-        private IDatabaseConnection db1 = new EFDatabaseConnection();
+        //private ApplicationDbContext db = new ApplicationDbContext();
+        private IDatabaseConnection db = new EFDatabaseConnection();
 
         // GET: Orders
         public ActionResult Index()
         {
-            var orders = db.Orders.Include(o => o.Firm).Include(o => o.Invoice).ToList();
+            var orders = db.getOrders().ToList();
 
             foreach (var order in orders)
             {
@@ -37,7 +37,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            Order order = db.findOrder((int)id);
             order.TransitionTo(order.StateName);
             if (order == null)
             {
@@ -49,8 +49,9 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Orders/Create
         public ActionResult Create()
         {
-            ViewBag.FirmId = new SelectList(db.Firms, "FirmId", "Name");
+            ViewBag.FirmId = new SelectList(db.getFirms(), "FirmId", "Name");
             //ViewBag.OrderId = new SelectList(db.Invoices, "InvoiceId", "InvoiceId");
+            ViewBag.WarehouseId = new SelectList(db.getWarehouses(), "WarehouseId", "Name");
             return View();
         }
 
@@ -59,16 +60,16 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "OrderId,Name,FirmId,InvoiceId")] Order order)
+        public ActionResult Create([Bind(Include = "OrderId,Name,FirmId,WarehouseId")] Order order)
         {
             if (ModelState.IsValid)
             {
-                db.Orders.Add(order);
-                db.SaveChanges();
+                db.addOrder(order);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.FirmId = new SelectList(db.Firms, "FirmId", "Name", order.FirmId);
+            ViewBag.FirmId = new SelectList(db.getFirms(), "FirmId", "Name", order.FirmId);
+            ViewBag.WarehouseId = new SelectList(db.getWarehouses(), "WarehouseId", "Name", order.WarehouseId);
             //ViewBag.OrderId = new SelectList(db.Invoices, "InvoiceId", "InvoiceId", order.OrderId);
             return View(order);
         }
@@ -80,7 +81,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            Order order = db.findOrder((int)id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -90,7 +91,8 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.FirmId = new SelectList(db.Firms, "FirmId", "Name", order.FirmId);
+            ViewBag.FirmId = new SelectList(db.getFirms(), "FirmId", "Name", order.FirmId);
+            ViewBag.WarehouseId = new SelectList(db.getWarehouses(), "WarehouseId", "Name", order.WarehouseId);
             //ViewBag.OrderId = new SelectList(db.Invoices, "InvoiceId", "InvoiceId", order.OrderId);
             return View(order);
         }
@@ -100,18 +102,17 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OrderId,Name,FirmId")] Order order)
+        public ActionResult Edit([Bind(Include = "OrderId,Name,FirmId,WarehouseId")] Order order)
         {
             if (ModelState.IsValid)
             {
                 order.TransitionTo(OrderState.AcceptedOrder);
                 order.StateName = OrderState.AcceptedOrder;
-
-                db.Entry(order).State = EntityState.Modified;
-                db.SaveChanges();
+                db.editOrder(order);
                 return RedirectToAction("Index");
             }
-            ViewBag.FirmId = new SelectList(db.Firms, "FirmId", "Name", order.FirmId);
+            ViewBag.FirmId = new SelectList(db.getFirms(), "FirmId", "Name", order.FirmId);
+            ViewBag.WarehouseId = new SelectList(db.getWarehouses(), "WarehouseId", "Name", order.WarehouseId);
             //ViewBag.OrderId = new SelectList(db.Invoices, "InvoiceId", "InvoiceId", order.OrderId);
             return View(order);
         }
@@ -123,7 +124,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            Order order = db.findOrder((int)id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -136,10 +137,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            /*Order order = db.Orders.Find(id);
-            db.Orders.Remove(order);
-            db.SaveChanges();*/
-            db1.deleteOrder(id);
+            db.deleteOrder(id);
             return RedirectToAction("Index");
         }
 
@@ -147,7 +145,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                db.dispose();
             }
             base.Dispose(disposing);
         }
@@ -158,7 +156,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            Order order = db.findOrder((int)id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -170,8 +168,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             }
 
             order.TransitionTo(OrderState.FinishedOrder);
-            db.Entry(order).State = EntityState.Modified;
-            db.SaveChanges();
+            db.editOrder(order);
 
             return RedirectToAction("Index");
         }

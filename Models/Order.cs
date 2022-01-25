@@ -47,8 +47,8 @@ namespace PrzeplywDokumentowWFirmie.Models
         public string Name { get; set; }
         public int FirmId { get; set; }
         public virtual Firm Firm { get; set; }
-        public int? InvoiceId { get; set; }
-        public virtual Invoice Invoice { get; set; }
+        public int WarehouseId { get; set; }
+        public virtual Warehouse Warehouse { get; set; }
         public virtual ICollection<Commodity> Commodities { get; set; }
         public OrderState StateName { get; set; }
         

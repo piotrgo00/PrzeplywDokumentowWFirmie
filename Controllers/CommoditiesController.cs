@@ -103,7 +103,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         }
 
         // GET: Commodities/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? id, int? orderId)
         {
             if (id == null)
             {
@@ -114,6 +114,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.OrderId = orderId;
             return View(commodity);
         }
 
@@ -122,8 +123,12 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            int? orderId = db.findCommodity(id).OrderId;
             db.deleteCommodity(id);
-            return RedirectToAction("Index");
+            if(orderId == null)
+                return RedirectToAction("Index");
+            else
+                return RedirectToAction("Edit", "Orders", new { id = orderId });
         }
 
         protected override void Dispose(bool disposing)

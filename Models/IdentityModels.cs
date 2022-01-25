@@ -38,7 +38,7 @@ namespace PrzeplywDokumentowWFirmie.Models
         public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Firm> Firms { get; set; }
-        public DbSet<Invoice> Invoices { get; set; }
+        /*public DbSet<Invoice> Invoices { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -46,6 +46,6 @@ namespace PrzeplywDokumentowWFirmie.Models
             modelBuilder.Entity<Order>()
                 .HasOptional(o => o.Invoice)
                 .WithRequired(i => i.Order);
-        }
+        }*/
     }
 }

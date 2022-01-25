@@ -44,8 +44,6 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
         void editWarehouse(Warehouse warehouse);
         void editCommodity(Commodity commodity);
         void editOrder(Order order);
-
-
         void SaveChanges();
         void dispose();
     }

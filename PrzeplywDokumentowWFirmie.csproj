@@ -244,6 +244,10 @@
     <Compile Include="Migrations\202201250111560_Firm-Country.Designer.cs">
       <DependentUpon>202201250111560_Firm-Country.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202201251157531_deleteInvoice.cs" />
+    <Compile Include="Migrations\202201251157531_deleteInvoice.Designer.cs">
+      <DependentUpon>202201251157531_deleteInvoice.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Commodity.cs" />
     <Compile Include="Models\Firm.cs" />
@@ -393,6 +397,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201250111560_Firm-Country.resx">
       <DependentUpon>202201250111560_Firm-Country.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201251157531_deleteInvoice.resx">
+      <DependentUpon>202201251157531_deleteInvoice.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -48,22 +48,18 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
 
         public void addCommodity(Commodity commodity)
         {
-            Commodity commodity1;
-            if (commodity.OrderId == null && commodity.WarehouseId != null) //check if commodity is from order or from warehouse
+            Commodity commodity1 = db.Commodities.Where(c => c.ConsumableItemId == commodity.ConsumableItemId)
+                .Where(c => c.FurnitureItemId == commodity.FurnitureItemId)
+                .Where(c => c.ElectronicItemId == commodity.ElectronicItemId)
+                .Where(c => c.WarehouseId == commodity.WarehouseId)
+                .Where(c => c.OrderId == commodity.OrderId)
+                .FirstOrDefault();
+            if (commodity1 != null) //check if commodity of the same type already exists
             {
-                commodity1 = db.Commodities.Where(c => c.ConsumableItemId == commodity.ConsumableItemId)
-                    .Where(c => c.FurnitureItemId == commodity.FurnitureItemId)
-                    .Where(c => c.ElectronicItemId == commodity.ElectronicItemId)
-                    .Where(c => c.WarehouseId == commodity.WarehouseId)
-                    .Where(c => c.OrderId == null)
-                    .FirstOrDefault();
-                if(commodity1 != null) //check if commodity of the same type already exists
-                {
-                    commodity1.Quantity = commodity1.Quantity + commodity.Quantity;
-                    db.Entry(commodity1).State = EntityState.Modified;
-                    this.SaveChanges();
-                    return;
-                }
+                commodity1.Quantity = commodity1.Quantity + commodity.Quantity;
+                db.Entry(commodity1).State = EntityState.Modified;
+                this.SaveChanges();
+                return;
             }
             db.Commodities.Add(commodity);
             this.SaveChanges();
@@ -72,7 +68,6 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
         public void addOrder(Order order)
         {
             order.TransitionTo(order.StateName);
-
             db.Orders.Add(order);
             this.SaveChanges();
         }
@@ -134,7 +129,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
 
         public IQueryable<Commodity> getCommodities()
         {
-            return db.Commodities.Include(c => c.ConsumableItem).Include(c => c.ElectronicItem).Include(c => c.FurnitureItem).Include(c => c.Warehouse);
+            return db.Commodities.Include(c => c.ConsumableItem).Include(c => c.ElectronicItem).Include(c => c.FurnitureItem).Include(c => c.Warehouse).Where(c => c.OrderId == null);
         }
 
         public IQueryable<Firm> getFirms()
@@ -149,12 +144,6 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
 
         public IQueryable<Order> getOrders()
         {
-            var orders = db.Orders.Include(o => o.Firm).Include(o => o.Invoice).ToList();
-
-            foreach (var order in orders)
-            {
-                order.TransitionTo(order.StateName);
-            }
             return db.Orders;
         }
 
@@ -236,7 +225,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
         {
             Order order = db.Orders.Find(id);
             var commodities = db.Commodities.Where(c => c.OrderId == id);
-            foreach(var commodity in commodities)
+            foreach (var commodity in commodities)
             {
                 db.Commodities.Remove(commodity);
             }

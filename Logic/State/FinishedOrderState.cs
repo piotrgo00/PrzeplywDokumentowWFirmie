@@ -16,7 +16,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.State
         public override Invoice GetInvoice()
         {
             // Retrurning Invoice in case of finished Order
-            return this._order.Invoice;
+            return new Invoice();
         }
         public override bool IsEditable()
         {
