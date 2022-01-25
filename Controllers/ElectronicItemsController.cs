@@ -49,7 +49,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ElectronicItemId,Name,IsUsed")] ElectronicItem electronicItem)
+        public ActionResult Create([Bind(Include = "ElectronicItemId,Name,IsUsed,Price")] ElectronicItem electronicItem)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ElectronicItemId,Name,IsUsed")] ElectronicItem electronicItem)
+        public ActionResult Edit([Bind(Include = "ElectronicItemId,Name,IsUsed,Price")] ElectronicItem electronicItem)
         {
             if (ModelState.IsValid)
             {

@@ -49,7 +49,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FurnitureItemId,Name,Condition,IsUsed")] FurnitureItem furnitureItem)
+        public ActionResult Create([Bind(Include = "FurnitureItemId,Name,Condition,IsUsed,Price")] FurnitureItem furnitureItem)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "FurnitureItemId,Name,Condition,IsUsed")] FurnitureItem furnitureItem)
+        public ActionResult Edit([Bind(Include = "FurnitureItemId,Name,Condition,IsUsed,Price")] FurnitureItem furnitureItem)
         {
             if (ModelState.IsValid)
             {

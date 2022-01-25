@@ -20,6 +20,12 @@
         <th>
             @Html.DisplayNameFor(model => model.Quantity)
         </th>
+        <th>
+            Cost per item
+        </th>
+        <th>
+            Total value
+        </th>
         <th></th>
     </tr>
 
@@ -37,6 +43,34 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
+            
+            @if(item.ConsumableItem != null)
+            {
+                <td>
+                    @item.ConsumableItem.Price
+                </td>
+                <td>
+                    @(item.ConsumableItem.Price*item.Quantity)
+                </td>
+            }
+            @if(item.ElectronicItem != null)
+            {
+                <td>
+                    @item.ElectronicItem.Price
+                </td>
+                <td>
+                    @(item.ElectronicItem.Price*item.Quantity)
+                </td>
+            }
+            @if(item.FurnitureItem != null)
+            {
+                <td>
+                    @item.FurnitureItem.Price
+                </td>
+                <td>
+                    @(item.FurnitureItem.Price*item.Quantity)
+                </td>
+            }
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.CommodityId }) |
                 @Html.ActionLink("Details", "Details", new { id = item.CommodityId }) |

@@ -49,7 +49,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ConsumableItemId,Name,ExpirationDate")] ConsumableItem consumableItem)
+        public ActionResult Create([Bind(Include = "ConsumableItemId,Name,ExpirationDate,Price")] ConsumableItem consumableItem)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ConsumableItemId,Name,ExpirationDate")] ConsumableItem consumableItem)
+        public ActionResult Edit([Bind(Include = "ConsumableItemId,Name,ExpirationDate,Price")] ConsumableItem consumableItem)
         {
             if (ModelState.IsValid)
             {

@@ -16,6 +16,7 @@ namespace PrzeplywDokumentowWFirmie.Models
         [Required]
         [DisplayName("Item Name")]
         public string Name { get; set; }
+        public int Price { get; set; }
         public Boolean IsUsed { get; set; }
         public virtual ICollection<Commodity> Commodities { get; set; }
 
@@ -49,6 +50,8 @@ namespace PrzeplywDokumentowWFirmie.Models
         [Required]
         [DisplayName("Item Name")]
         public string Name { get; set; }
+        public int Price { get; set; }
+
         [Required]
         [DateValidator]
         [DataType(DataType.Date)]
@@ -85,6 +88,8 @@ namespace PrzeplywDokumentowWFirmie.Models
         [Required]
         [DisplayName("Item Name")]
         public string Name { get; set; }
+        public int Price { get; set; }
+
         public string Condition { get; set; }
         public Boolean IsUsed { get; set; }
         public virtual ICollection<Commodity> Commodities { get; set; }

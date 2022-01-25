@@ -60,26 +60,62 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Commodities.FirstOrDefault().Quantity)
                         </th>
+                        <th>
+                            Cost per item
+                        </th>
+                        <th>
+                            Total value
+                        </th>
+                        <th></th>
                         @*<th></th>*@
                     </tr>
 
                     @foreach (var item in Model.Commodities)
                     {
-                        <tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ConsumableItem.Name)
+                            @Html.DisplayFor(modelItem => item.ElectronicItem.Name)
+                            @Html.DisplayFor(modelItem => item.FurnitureItem.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        @if (item.ConsumableItem != null)
+                         {
                             <td>
-                                @Html.DisplayFor(modelItem => item.ConsumableItem.Name)
-                                @Html.DisplayFor(modelItem => item.ElectronicItem.Name)
-                                @Html.DisplayFor(modelItem => item.FurnitureItem.Name)
+                                @item.ConsumableItem.Price
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Quantity)
+                                @(item.ConsumableItem.Price*item.Quantity)
+                            </td>
+                         }
+                        @if (item.ElectronicItem != null)
+                         {
+                            <td>
+                                @item.ElectronicItem.Price
                             </td>
                             <td>
-                                    @*@Html.ActionLink("Edit", "Edit", new { id = item.CommodityId }) |
-                                    @Html.ActionLink("Details", "Details", new { id = item.CommodityId }) |*@
-                                    @Html.ActionLink("Delete", "Delete", "Commodities", new { id = item.CommodityId, orderId = Model.OrderId }, null)
+                                @(item.ElectronicItem.Price*item.Quantity)
                             </td>
-                        </tr>
+                         }
+                        @if (item.FurnitureItem != null)
+                         {
+                            <td>
+                                @item.FurnitureItem.Price
+                            </td>
+                            <td>
+                                @(item.FurnitureItem.Price*item.Quantity)
+                            </td>
+                         }
+                        <td>
+                            @*@Html.ActionLink("Edit", "Edit", new { id = item.CommodityId }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.CommodityId }) |*@
+                            @Html.ActionLink("Delete", "Delete", "Commodities", new { id = item.CommodityId, orderId = Model.OrderId }, null)
+                        </td>
+                    </tr>
+                    <tr>
+                    </tr>
                     }
                 </table>
             </div>
