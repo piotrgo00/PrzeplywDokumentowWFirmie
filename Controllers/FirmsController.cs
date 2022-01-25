@@ -47,7 +47,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FirmId,Name,Address")] Firm firm)
+        public ActionResult Create([Bind(Include = "FirmId,Name,Address,Country")] Firm firm)
         {
             if (ModelState.IsValid)
             {

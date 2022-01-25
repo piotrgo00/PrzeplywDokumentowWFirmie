@@ -48,6 +48,13 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
             db.Commodities.Add(commodity);
             this.SaveChanges();
         }
+        public void addOrder(Order order)
+        {
+            order.TransitionTo(order.StateName.ToState());
+
+            db.Orders.Add(order);
+            this.SaveChanges();
+        }
 
         public FurnitureItem findFurnitureItem(int id)
         {
@@ -78,7 +85,10 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
         {
             return db.Warehouses.Find(id);
         }
-
+        public Order findOrder(int id)
+        {
+            return db.Orders.Find(id);
+        }
         public IQueryable<ConsumableItem> getConsumableItems()
         {
             return db.ConsumableItems;
@@ -107,6 +117,16 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
         public IQueryable<Warehouse> getWarehouses()
         {
             return db.Warehouses;
+        }
+        public IQueryable<Order> getOrders()
+        {
+            var orders = db.Orders.Include(o => o.Firm).Include(o => o.Invoice).ToList();
+
+            foreach (var order in orders)
+            {
+                order.TransitionTo(order.StateName.ToState());
+            }
+            return db.Orders;
         }
 
         [HandleError(View = "Error")]
@@ -175,6 +195,12 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
             db.Warehouses.Remove(warehouse);
             this.SaveChanges();
         }
+        public void deleteOrder(int id)
+        {
+            Order order = db.Orders.Find(id);
+            db.Orders.Remove(order);
+            this.SaveChanges();
+        }
 
         public void dispose()
         {
@@ -215,6 +241,11 @@ namespace PrzeplywDokumentowWFirmie.Logic.Facade
         public void editWarehouse(Warehouse warehouse)
         {
             db.Entry(warehouse).State = EntityState.Modified;
+            this.SaveChanges();
+        }
+        public void editOrder(Order order)
+        {
+            db.Entry(order).State = EntityState.Modified;
             this.SaveChanges();
         }
     }

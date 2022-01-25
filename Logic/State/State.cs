@@ -17,6 +17,9 @@ namespace PrzeplywDokumentowWFirmie.Logic.State
 
         public abstract string GetState();
         public abstract Invoice GetInvoice();
+        public abstract bool IsEditable();
+        public abstract bool IsAccepted();
+        public abstract bool IsFinished();
 
     }
 }

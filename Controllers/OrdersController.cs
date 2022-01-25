@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PrzeplywDokumentowWFirmie.Models;
+using PrzeplywDokumentowWFirmie.Logic.State;
 
 namespace PrzeplywDokumentowWFirmie.Controllers
 {
@@ -17,8 +18,14 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Orders
         public ActionResult Index()
         {
-            var orders = db.Orders.Include(o => o.Firm).Include(o => o.Invoice);
-            return View(orders.ToList());
+            var orders = db.Orders.Include(o => o.Firm).Include(o => o.Invoice).ToList();
+
+            foreach (var order in orders)
+            {
+                order.TransitionTo(order.StateName.ToState());
+            }
+
+            return View(orders);
         }
 
         // GET: Orders/Details/5
@@ -75,6 +82,11 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             {
                 return HttpNotFound();
             }
+            order.TransitionTo(order.StateName.ToState());
+            if (!order.IsEditable())
+            {
+                return HttpNotFound();
+            }
             ViewBag.FirmId = new SelectList(db.Firms, "FirmId", "Name", order.FirmId);
             //ViewBag.OrderId = new SelectList(db.Invoices, "InvoiceId", "InvoiceId", order.OrderId);
             return View(order);
@@ -89,6 +101,9 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         {
             if (ModelState.IsValid)
             {
+                order.TransitionTo(new AcceptedOrderState());
+                order.StateName = OrderState.AcceptedOrder;
+
                 db.Entry(order).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

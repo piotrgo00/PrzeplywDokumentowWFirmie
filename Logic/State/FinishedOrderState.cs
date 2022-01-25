@@ -11,12 +11,24 @@ namespace PrzeplywDokumentowWFirmie.Logic.State
     {
         public override string GetState()
         {
-            return "Finished order";
+            return "Finished";
         }
         public override Invoice GetInvoice()
         {
             // Retrurning Invoice in case of finished Order
             return this._order.Invoice;
+        }
+        public override bool IsEditable()
+        {
+            return false;
+        }
+        public override bool IsAccepted()
+        {
+            return false;
+        }
+        public override bool IsFinished()
+        {
+            return true;
         }
     }
 }

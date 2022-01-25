@@ -17,9 +17,10 @@
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.InvoiceId)
-        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.StateName)
+        </th>
+        <th></th>
         <th></th>
     </tr>
 
@@ -31,15 +32,19 @@
         <td>
             @Html.DisplayFor(modelItem => item.Name)
         </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.InvoiceId)
-        </td>*@
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.OrderId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.OrderId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.OrderId })
+            @*@Html.DisplayFor(modelItem => item.GetState())*@
+            @item.GetState()
+        </td>
+        <td align="center">
+            @Html.Partial("EditButton", new ViewDataDictionary { { "id", item.OrderId}, { "isEditable", item.IsEditable()} })
+            @Html.Partial("MakeOrderButton", new ViewDataDictionary { { "id", item.OrderId }, { "isAccepted", item.IsAccepted() } })
+            @Html.Partial("GetInvoiceButton", new ViewDataDictionary { { "id", item.OrderId}, { "isFinished", item.IsFinished()} })
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id = item.OrderId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.OrderId })
         </td>
     </tr>
 }
-
 </table>

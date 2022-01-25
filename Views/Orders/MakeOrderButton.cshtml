@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewBag.Title = "MakeOrderButton";
+    string orderId = this.ViewData["id"].ToString();
+    bool isAccepted = (bool)this.ViewData["isAccepted"];
+}
+
+@if (isAccepted)
+{
+    <a href="#">Realize order</a>
+}

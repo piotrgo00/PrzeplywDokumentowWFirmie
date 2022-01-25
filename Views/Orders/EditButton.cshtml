@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "EditButton";
+    string orderId = this.ViewData["id"].ToString();
+    bool isEditable = (bool)this.ViewData["isEditable"];
+}
+
+@if (isEditable) 
+{
+    @Html.ActionLink("Edit", "Edit", new { id = orderId }) 
+}
