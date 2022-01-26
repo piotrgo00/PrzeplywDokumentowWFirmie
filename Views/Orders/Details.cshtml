@@ -31,13 +31,18 @@
         </dt>
 
         <dd>
+            @Html.DisplayFor(model => model.Warehouse.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Warehouse.Name)
+        </dt>
+
+        <dd>
             <table class="table">
                 <tr>
                     <th>
                         @Html.DisplayNameFor(model => model.Commodities.FirstOrDefault().ConsumableItem.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Commodities.FirstOrDefault().Warehouse.Name)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Commodities.FirstOrDefault().Quantity)
@@ -54,16 +59,13 @@
                             @Html.DisplayFor(modelItem => item.FurnitureItem.Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Warehouse.Name)
-                        </td>
-                        <td>
                             @Html.DisplayFor(modelItem => item.Quantity)
                         </td>
                         @*<td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.CommodityId }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.CommodityId }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.CommodityId })
-                            </td>*@
+                            @Html.ActionLink("Edit", "Edit", new { id = item.CommodityId }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.CommodityId }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.CommodityId })
+                        </td>*@
                     </tr>
                 }
             </table>
