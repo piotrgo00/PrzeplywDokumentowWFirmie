@@ -169,7 +169,6 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             }
             base.Dispose(disposing);
         }
-
         public ActionResult RealizeOrder(int? id)
         {
             this.IsLoggedIn();
@@ -217,7 +216,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
                     if (_commodity.ConsumableItem != null)
                         itemName = _commodity.ConsumableItem.Name;
 
-                    string message = "<br>" + _commodity.Quantity + " pieces of " + itemName + " are missing";
+                    string message = "<br>" + _commodity.Quantity + " pieces of " + itemName;
                     notEnoughCommodities += message;
                 }
             }
@@ -225,7 +224,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             // checks if there were any problems with finishing order
             if (notEnoughCommodities.Length != 0)
             {
-                IHtmlString message = new HtmlString(order.Name + " cannot be realised: " + notEnoughCommodities);
+                IHtmlString message = new HtmlString("Order: " + order.Name + " cannot be realised." + "<br><br>Warehouse: " + order.Warehouse.Name + " is missing: " + notEnoughCommodities);
                 TempData["NotEnoughCommodities"] = message;
                 return RedirectToAction("Index");
             }
