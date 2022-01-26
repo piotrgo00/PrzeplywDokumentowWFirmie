@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background-color: #ecedee;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -21,4 +22,31 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+.homeContainer {
+    background-image: url('Home background.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 70vh;
+    filter: grayscale(20%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.titleDiv {
+    background-color: aliceblue;
+    width: fit-content;
+    height: fit-content;
+    padding: 1em 5em;
+    text-align: center;
+    border-radius: 35px;
+    opacity: 0.9;
+}
+
+.title {
+    font-size: 3em;
+    font-family: 'Source Serif 4', sans-serif;
 }
