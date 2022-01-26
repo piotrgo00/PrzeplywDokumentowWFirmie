@@ -41,14 +41,6 @@
             </div>
         </div>
 
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.InvoiceId, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.InvoiceId, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.InvoiceId, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
-
         <div class="form-group">
             @Html.LabelFor(model => model.Commodities, "Commodities", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -67,7 +59,6 @@
                             Total value
                         </th>
                         <th></th>
-                        @*<th></th>*@
                     </tr>
 
                     @foreach (var item in Model.Commodities)
@@ -109,8 +100,6 @@
                             </td>
                          }
                         <td>
-                            @*@Html.ActionLink("Edit", "Edit", new { id = item.CommodityId }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.CommodityId }) |*@
                             @Html.ActionLink("Delete", "Delete", "Commodities", new { id = item.CommodityId, orderId = Model.OrderId }, null)
                         </td>
                     </tr>
@@ -121,12 +110,17 @@
             </div>
         </div>
         <div>
-            @Html.ActionLink("Create new Commodity", "Create", "Commodities", new { id = Model.OrderId }, null)
+            @*@Html.ActionLink("Create new Commodity", "Create", "Commodities", new { id = Model.OrderId }, null)*@
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Accept Order" class="btn btn-default" />
+                <span style="margin-right:5px">
+                    <a href="/Commodities/Create/@Model.OrderId" class="btn btn-default">Add new commodity</a>
+                </span>
+                <span>
+                    <input type="submit" value="Accept Order" class="btn btn-default" /> 
+                </span>
             </div>
         </div>
     </div>

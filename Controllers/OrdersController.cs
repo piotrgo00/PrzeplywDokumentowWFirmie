@@ -169,19 +169,29 @@ namespace PrzeplywDokumentowWFirmie.Controllers
                 return HttpNotFound();
             }
             List<Commodity> commodities = db.getCommoditiesFromOrder((int)id).ToList();
-            List<Commodity> notEnoughInWarehouseCommodities = new List<Commodity>();
+            string notEnoughCommodities = "";
             foreach(Commodity commodity in commodities) //find if it's possible to complete order
             {
-                Commodity commodityFromWarehouse = db.findCommodityFromWarehouse(commodity);
+                Commodity commodityFromWarehouse = db.findCommodityFromWarehouse(commodity) != null ? db.findCommodityFromWarehouse(commodity) : new Commodity();
                 if (commodity.Quantity > commodityFromWarehouse.Quantity)
                 {
-                    notEnoughInWarehouseCommodities.Add(commodity);
+                    var x = commodity;
+                    x.Quantity = commodity.Quantity - commodityFromWarehouse.Quantity;
+                    // search for the name of an item
+                    string ItemName = x.ElectronicItem != null ? x.ElectronicItem.Name : x.FurnitureItem != null ? x.FurnitureItem.Name : x.ConsumableItem != null ? x.ConsumableItem.Name : null;
+
+                    string message = "<br>" + x.Quantity + " of " + ItemName + " is missing";
+                    notEnoughCommodities += message;
                 }
             }
-            if(notEnoughInWarehouseCommodities.Count != 0)
+
+            if (notEnoughCommodities.Length != 0)
             {
-                return RedirectToAction("Index"); //todo
+                IHtmlString message = new HtmlString(notEnoughCommodities);
+                TempData["NotEnoughCommodities"] = message;
+                return RedirectToAction("Index");
             }
+
             foreach (Commodity commodity in commodities) //complete possible order by reducing quantity of chosen commodities
             {
                 Commodity commodityFromWarehouse = db.findCommodityFromWarehouse(commodity);

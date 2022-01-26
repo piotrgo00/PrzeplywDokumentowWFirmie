@@ -40,6 +40,12 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         public ActionResult Create(int? id)
         {
             ViewBag.OrderId = id;
+            var order = db.findOrder((int)id);
+            order.TransitionTo(order.StateName);
+            if(!order.IsEditable())
+            {
+                return HttpNotFound();
+            }
             ViewBag.ConsumableItemId = new SelectList(db.getConsumableItems(), "ConsumableItemId", "Name");
             ViewBag.ElectronicItemId = new SelectList(db.getElectronicItems(), "ElectronicItemId", "Name");
             ViewBag.FurnitureItemId = new SelectList(db.getFurnitureItems(), "FurnitureItemId", "Name");

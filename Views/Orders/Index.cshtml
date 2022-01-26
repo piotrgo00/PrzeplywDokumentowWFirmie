@@ -45,3 +45,10 @@
     </tr>
 }
 </table>
+@if(TempData["NotEnoughCommodities"] != null)
+ {
+    <p align="center" style="color: indianred">
+        @Html.Raw(TempData["NotEnoughCommodities"])
+
+    </p>
+ }
