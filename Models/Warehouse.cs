@@ -11,6 +11,7 @@ namespace PrzeplywDokumentowWFirmie.Models
         public int WarehouseId { get; set; }
         [DisplayName("Warehouse Name")]
         public string Name { get; set; }
+        public string Address { get; set; }
         public virtual ICollection<Commodity> Commodities { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
     }

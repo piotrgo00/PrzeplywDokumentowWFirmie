@@ -50,7 +50,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "WarehouseId,Name")] Warehouse warehouse)
+        public ActionResult Create([Bind(Include = "WarehouseId,Name,Address")] Warehouse warehouse)
         {
             this.IsLoggedIn();
             if (ModelState.IsValid)
@@ -83,7 +83,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "WarehouseId,Name")] Warehouse warehouse)
+        public ActionResult Edit([Bind(Include = "WarehouseId,Name,Address")] Warehouse warehouse)
         {
             this.IsLoggedIn();
             if (ModelState.IsValid)
