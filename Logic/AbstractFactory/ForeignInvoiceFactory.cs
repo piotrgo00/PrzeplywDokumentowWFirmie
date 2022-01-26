@@ -55,7 +55,7 @@ namespace PrzeplywDokumentowWFirmie.Logic.AbstractFactory
                    "border: solid 1px black;" +
                    "text-align: center;" +
                    "}" +
-                   "tr:nth-child(odd) {" +
+                   "tr:nth-child(even) {" +
                    "background-color: #f2f2f2;" +
                    "}" +
                    "</style>";

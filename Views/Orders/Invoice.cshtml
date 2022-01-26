@@ -8,8 +8,8 @@
 <h2>Invoice for @ViewBag.order.Name</h2>
 
 
-
-@Html.Raw(ViewBag.htmlString)
-
+<div style="background-color: white">
+    @Html.Raw(ViewBag.htmlString)
+</div>
 
 @Html.ActionLink("Download Invoice", "DownloadInvoice", new { id = ViewBag.orderId, domestic = ViewBag.domestic })
