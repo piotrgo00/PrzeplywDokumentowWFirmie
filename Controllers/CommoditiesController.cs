@@ -18,7 +18,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Commodities
         public ActionResult Index()
         {
-            return View(db.getCommodities().ToList());
+            return View(db.getCommodities().OrderBy(p => p.Warehouse.Name).ToList());
         }
 
         // GET: Commodities/Details/5
