@@ -18,12 +18,14 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Commodities
         public ActionResult Index()
         {
+            this.IsLoggedIn();
             return View(db.getCommodities().OrderBy(p => p.Warehouse.Name).ToList());
         }
 
         // GET: Commodities/Details/5
         public ActionResult Details(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -39,7 +41,8 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Commodities/Create
         public ActionResult Create(int? id)
         {
-            if(id != null)
+            this.IsLoggedIn();
+            if (id != null)
             {
                 ViewBag.OrderId = id;
                 var order = db.findOrder((int)id);
@@ -63,6 +66,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "CommodityId,Quantity,ElectronicItemId,FurnitureItemId,ConsumableItemId,WarehouseId,OrderId")] Commodity commodity)
         {
+            this.IsLoggedIn();
             if (ModelState.IsValid)
             {
                 db.addCommodity(commodity);
@@ -82,6 +86,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Commodities/Edit/5
         public ActionResult Edit(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -102,6 +107,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "CommodityId,Quantity,WarehouseId")] Commodity commodity)
         {
+            this.IsLoggedIn();
             if (ModelState.IsValid)
             {
                 db.editCommodityPartial(commodity);
@@ -114,6 +120,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Commodities/Delete/5
         public ActionResult Delete(int? id, int? orderId)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -132,6 +139,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            this.IsLoggedIn();
             int? orderId = db.findCommodity(id).OrderId;
             db.deleteCommodity(id);
             if(orderId == null)
@@ -147,6 +155,14 @@ namespace PrzeplywDokumentowWFirmie.Controllers
                 db.dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void IsLoggedIn()
+        {
+            if (!Request.IsAuthenticated)
+            {
+                Response.Redirect("Account/Login");
+            }
         }
     }
 }

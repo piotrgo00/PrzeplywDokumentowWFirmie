@@ -18,12 +18,14 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Warehouses
         public ActionResult Index()
         {
+            this.IsLoggedIn();
             return View(db.getWarehouses().ToList());
         }
 
         // GET: Warehouses/Details/5
         public ActionResult Details(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -39,6 +41,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Warehouses/Create
         public ActionResult Create()
         {
+            this.IsLoggedIn();
             return View();
         }
 
@@ -49,6 +52,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "WarehouseId,Name")] Warehouse warehouse)
         {
+            this.IsLoggedIn();
             if (ModelState.IsValid)
             {
                 db.addWarehouse(warehouse);
@@ -61,6 +65,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Warehouses/Edit/5
         public ActionResult Edit(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -80,6 +85,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "WarehouseId,Name")] Warehouse warehouse)
         {
+            this.IsLoggedIn();
             if (ModelState.IsValid)
             {
                 db.editWarehouse(warehouse);
@@ -91,6 +97,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Warehouses/Delete/5
         public ActionResult Delete(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -108,6 +115,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            this.IsLoggedIn();
             db.deleteWarehouse(id);
             return RedirectToAction("Index");
         }
@@ -119,6 +127,14 @@ namespace PrzeplywDokumentowWFirmie.Controllers
                 db.dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void IsLoggedIn()
+        {
+            if (!Request.IsAuthenticated)
+            {
+                Response.Redirect("Account/Login");
+            }
         }
     }
 }
