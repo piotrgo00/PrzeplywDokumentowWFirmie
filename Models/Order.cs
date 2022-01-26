@@ -12,6 +12,7 @@ namespace PrzeplywDokumentowWFirmie.Models
 {
     public static class Extensions
     {
+        // simple extension method converting enum OrderState to State
         public static State ToState(this OrderState state)
         {
             switch (state)
@@ -30,6 +31,7 @@ namespace PrzeplywDokumentowWFirmie.Models
             }
         }
     }
+    // enum for OrderState what is stored in DataBase
     public enum OrderState
     {
         EmptyOrder,
