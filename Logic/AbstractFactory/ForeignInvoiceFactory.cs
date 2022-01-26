@@ -1,20 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using PrzeplywDokumentowWFirmie.Models;
+using System.Collections.Generic;
 
 namespace PrzeplywDokumentowWFirmie.Logic.AbstractFactory
 {
     public class ForeignInvoiceFactory : InvoiceAbstractFactory
     {
+        private readonly float VATconsumable = 0.12F,
+                               VATelectronic = 0.15F,
+                               VATfurniture = 0.20F,
+                               VATabroad = 0.05F,
+                               EuroModifier = 0.22F;
+
+        private float total = 0;
+
         //Returns the invoice as a HTML document
-        public string getHTML(Models.Order order)
+        public string getHTML(Order order)
         {
             string toReturn = "";
 
             if (order == null)
                 return "NULL_ORDER";
-
-            toReturn += HTMLinvoiceTo(order.Firm);
-            toReturn += HTMLinvoiceFrom();
-            toReturn += HTMLlistCommodities(order.Commodities);
+            toReturn += HTMLhead();
+            toReturn += HTMLbody(order);
+            toReturn += $"<p style=\"text-align:right; margin-top: 3em;\">Total: {total * EuroModifier}€</p>";
 
 
             return toReturn;
@@ -22,18 +30,72 @@ namespace PrzeplywDokumentowWFirmie.Logic.AbstractFactory
 
 
 
+        private string HTMLhead()
+        {
+            string toReturn = "";
+
+            toReturn += "<head>";
+            toReturn += HTMLstyle();
+            toReturn += "</head>";
+
+            return toReturn;
+        }
+
+        private string HTMLstyle()
+        {
+            return "<style>" +
+                   ".ClientSellerContainer {" +
+                   "display: flex;" +
+                   "justify-content: space-around;" +
+                   "}" +
+                   "table {" +
+                   "width: 100%;" +
+                   "}" +
+                   ".inTable table, .inTable td, .inTable th {" +
+                   "border: solid 1px black;" +
+                   "text-align: center;" +
+                   "}" +
+                   "tr:nth-child(odd) {" +
+                   "background-color: #f2f2f2;" +
+                   "}" +
+                   "</style>";
+        }
+
+        private string HTMLbody(Models.Order order)
+        {
+            string toReturn = "";
+
+            if (order == null)
+                return "NULL_ORDER";
+            toReturn += "<h1 style=\"text-align: center;\">Invoice</h1>";
+            toReturn += "<table>" +
+                        "<tr>" +
+                        "<td>";
+            toReturn += HTMLinvoiceTo(order.Firm);
+            toReturn += "</td>" +
+                        "<td>";
+            toReturn += HTMLinvoiceFrom();
+            toReturn += "</td>" +
+                        "</tr>" +
+                        "</table>";
+            toReturn += HTMLlistCommodities(order.Commodities);
+
+            return toReturn;
+        }
 
         //Returns HTML code responsible for writing out invoice recipient info
-        private string HTMLinvoiceTo(Models.Firm firm)
+        private string HTMLinvoiceTo(Firm firm)
         {
             string toReturn = "";
 
             if (firm == null)
                 return "NULL_FIRM";
 
-            toReturn += "<h3>Invoice to:</h3>";
-            toReturn += $"<p>Name: {firm.Name}</p>";
-            toReturn += $"<p>Address: {firm.Address}</p>";
+            toReturn += "<div style=\"text-align: center;\">" +
+                        "<h3>Invoice to:</h3>" +
+                        $"<p>Name: {firm.Name}</p>" +
+                        $"<p>Address: {firm.Address}</p>" +
+                        "</div>";
 
             return toReturn;
         }
@@ -43,9 +105,11 @@ namespace PrzeplywDokumentowWFirmie.Logic.AbstractFactory
         {
             string toReturn = "";
 
-            toReturn += "<h3>Invoice from:</h3>";
-            toReturn += "<p>Name: myFirmName</p>";
-            toReturn += "<p>Address: myFirmAddress</p>";
+            toReturn += "<div style=\"text-align: center;\">" +
+                        "<h3>Invoice from:</h3>" +
+                        "<p>Name: myFirmName</p>" +
+                        "<p>Address: myFirmAddress</p>" +
+                        "</div>";
 
             return toReturn;
         }
@@ -88,33 +152,79 @@ namespace PrzeplywDokumentowWFirmie.Logic.AbstractFactory
 
 
             //Writing out the actual code
-            toReturn += "<h3>Consumables:</h3>" +
-                        "<ol>";
+            toReturn += "<h3>Consumables</h3>" +
+                        "<table class=\"inTable\">" +
+                        "   <tr>" +
+                        "       <th>Name</th>" +
+                        "       <th>Quantity</th>" +
+                        "       <th>Expiration date</th>" +
+                        "       <th>Price netto</th>" +
+                        "       <th>VAT</th>" +
+                        "       <th>Price brutto</th>" +
+                        "   </tr>";
 
             for(int i = 0; i < consumables.Count; i++)
             {
-                toReturn += $"<li>Name: {consumables[i].Name} Count: {consumablesCount[i]}</li>";
+                toReturn += $"<tr>" +
+                            $"  <td>{consumables[i].Name}</td>" +
+                            $"  <td>{consumablesCount[i]}</td>" +
+                            $"  <td>{consumables[i].ExpirationDate}</td>" +
+                            $"  <td>{consumables[i].Price * EuroModifier}€</td>" +
+                            $"  <td>{(VATconsumable + VATabroad) * 100}%</td>" +
+                            $"  <td>{consumables[i].Price * (VATconsumable + VATabroad + 1) * EuroModifier}€</td>" +
+                            $"</tr>";
+                total += consumables[i].Price * (VATconsumable + 1);
             }
 
-            toReturn += "</ol>" +
+            toReturn += "</table>" +
                         "<h3>Electronics</h3>" +
-                        "<ol>";
+                        "<table class=\"inTable\">" +
+                        "   <tr>" +
+                        "       <th>Name</th>" +
+                        "       <th>Quantity</th>" +
+                        "       <th>Price netto</th>" +
+                        "       <th>VAT</th>" +
+                        "       <th>Price brutto</th>" +
+                        "   </tr>";
 
             for (int i = 0; i < electronics.Count; i++)
             {
-                toReturn += $"<li>Name: {electronics[i].Name} Count: {electronicsCount[i]}</li>";
+                toReturn += $"<tr>" +
+                            $"  <td>{electronics[i].Name}</td>" +
+                            $"  <td>{electronicsCount[i]}</td>" +
+                            $"  <td>{electronics[i].Price * EuroModifier}€</td>" +
+                            $"  <td>{(VATelectronic + VATabroad) * 100}%</td>" +
+                            $"  <td>{electronics[i].Price * (VATelectronic + VATabroad + 1) * EuroModifier}€</td>" +
+                            $"</tr>";
+                total += electronics[i].Price * (VATelectronic + 1);
             }
 
-            toReturn += "</ol>" +
+            toReturn += "</table>" +
                         "<h3>Furniture</h3>" +
-                        "<ol>";
+                        "<table class=\"inTable\">" +
+                        "   <tr>" +
+                        "       <th>Name</th>" +
+                        "       <th>Quantity</th>" +
+                        "       <th>Condition</th>" +
+                        "       <th>Price netto</th>" +
+                        "       <th>VAT</th>" +
+                        "       <th>Price brutto</th>" +
+                        "   </tr>";
 
             for (int i = 0; i < furniture.Count; i++)
             {
-                toReturn += $"<li>Name: {furniture[i].Name} Count: {furnitureCount[i]}</li>";
+                toReturn += $"<tr>" +
+                            $"  <td>{furniture[i].Name}</td>" +
+                            $"  <td>{furnitureCount[i]}</td>" +
+                            $"  <td>{furniture[i].Condition}</td>" +
+                            $"  <td>{furniture[i].Price * EuroModifier}€</td>" +
+                            $"  <td>{(VATfurniture + VATabroad) * 100}%</td>" +
+                            $"  <td>{furniture[i].Price * (VATfurniture + VATabroad + 1) * EuroModifier}€</td>" +
+                            $"</tr>";
+                total += furniture[i].Price * (VATfurniture + 1);
             }
 
-            toReturn += "</ol>";
+            toReturn += "</table>";
 
             return toReturn;
         }
