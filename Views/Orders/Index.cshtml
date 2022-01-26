@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Orders</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -45,3 +45,10 @@
     </tr>
 }
 </table>
+@if(TempData["NotEnoughCommodities"] != null)
+ {
+    <p align="center" style="color: indianred">
+        @Html.Raw(TempData["NotEnoughCommodities"])
+
+    </p>
+ }

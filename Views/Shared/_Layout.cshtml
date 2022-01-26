@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - moja aplikacja platformy ASP.NET</title>
+    <title>@ViewBag.Title - Dokumenty</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -18,20 +18,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Nazwa aplikacji", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Documents and Orders", "Index", "Orders", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @*<li>@Html.ActionLink("Strona główna", "Index", "Home")</li>
-        <li>@Html.ActionLink("Informacje", "About", "Home")</li>
-        <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>*@
+                    <li>@Html.ActionLink("Orders", "Index", "Orders")</li>
                     <li>@Html.ActionLink("Warehouses", "Index", "Warehouses")</li>
+                    <li>@Html.ActionLink("Firms", "Index", "Firms")</li>
                     <li>@Html.ActionLink("Commodities", "Index", "Commodities")</li>
                     <li>@Html.ActionLink("Electornic Items", "Index", "ElectronicItems")</li>
                     <li>@Html.ActionLink("Consumable Items", "Index", "ConsumableItems")</li>
                     <li>@Html.ActionLink("Furniture Itmes", "Index", "FurnitureItems")</li>
-                    <li>@Html.ActionLink("Orders", "Index", "Orders")</li>
-                    <li>@Html.ActionLink("Firms", "Index", "Firms")</li>
 
                 </ul>
                 @Html.Partial("_LoginPartial")
@@ -42,7 +39,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Moja aplikacja ASP.NET</p>
+            <p>@DateTime.Now</p>
         </footer>
     </div>
 

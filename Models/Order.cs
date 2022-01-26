@@ -12,6 +12,7 @@ namespace PrzeplywDokumentowWFirmie.Models
 {
     public static class Extensions
     {
+        // simple extension method converting enum OrderState to State
         public static State ToState(this OrderState state)
         {
             switch (state)
@@ -30,6 +31,7 @@ namespace PrzeplywDokumentowWFirmie.Models
             }
         }
     }
+    // enum for OrderState what is stored in DataBase
     public enum OrderState
     {
         EmptyOrder,
@@ -40,14 +42,15 @@ namespace PrzeplywDokumentowWFirmie.Models
     public class Order
     {
         public int OrderId { get; set; }
+        public int FirmId { get; set; }
+        public int WarehouseId { get; set; }
+
         [Display(Name = "Order name")]
         public string Name { get; set; }
-        public int FirmId { get; set; }
+        public OrderState StateName { get; set; }
         public virtual Firm Firm { get; set; }
-        public int WarehouseId { get; set; }
         public virtual Warehouse Warehouse { get; set; }
         public virtual ICollection<Commodity> Commodities { get; set; }
-        public OrderState StateName { get; set; }
         
         [NotMapped]
         private State _state = null;
