@@ -18,12 +18,14 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Firms
         public ActionResult Index()
         {
+            this.IsLoggedIn();
             return View(db.getFirms());
         }
 
         // GET: Firms/Details/5
         public ActionResult Details(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -40,6 +42,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Firms/Create
         public ActionResult Create()
         {
+            this.IsLoggedIn();
             return View();
         }
 
@@ -50,6 +53,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "FirmId,Name,Address,Country")] Firm firm)
         {
+            this.IsLoggedIn();
             if (ModelState.IsValid)
             {
                 db.addFirm(firm);
@@ -62,6 +66,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Firms/Edit/5
         public ActionResult Edit(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -81,6 +86,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "FirmId,Name,Address,Country")] Firm firm)
         {
+            this.IsLoggedIn();
             if (ModelState.IsValid)
             {
                 db.editFirm(firm);
@@ -92,6 +98,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Firms/Delete/5
         public ActionResult Delete(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -109,6 +116,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            this.IsLoggedIn();
             db.deleteFirm(id);
             return RedirectToAction("Index");
         }
@@ -120,6 +128,14 @@ namespace PrzeplywDokumentowWFirmie.Controllers
                 db.dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void IsLoggedIn()
+        {
+            if (!Request.IsAuthenticated)
+            {
+                Response.Redirect("Account/Login");
+            }
         }
     }
 }

@@ -20,12 +20,14 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: FurnitureItems
         public ActionResult Index()
         {
+            this.IsLoggedIn();
             return View(db.getFurnitureItems().ToList());
         }
 
         // GET: FurnitureItems/Details/5
         public ActionResult Details(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -41,6 +43,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: FurnitureItems/Create
         public ActionResult Create()
         {
+            this.IsLoggedIn();
             return View(new FurnitureItem());
         }
 
@@ -51,6 +54,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "FurnitureItemId,Name,Condition,IsUsed,Price")] FurnitureItem furnitureItem)
         {
+            this.IsLoggedIn();
             if (ModelState.IsValid)
             {
                 FMConector.addItem(new FurnitureItemCreator(), furnitureItem);
@@ -63,6 +67,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: FurnitureItems/Edit/5
         public ActionResult Edit(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -82,6 +87,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "FurnitureItemId,Name,Condition,IsUsed,Price")] FurnitureItem furnitureItem)
         {
+            this.IsLoggedIn();
             if (ModelState.IsValid)
             {
                 FMConector.editItem(new FurnitureItemCreator(), furnitureItem);
@@ -93,6 +99,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: FurnitureItems/Delete/5
         public ActionResult Delete(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -110,6 +117,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            this.IsLoggedIn();
             FMConector.deleteItem(new FurnitureItemCreator(), id);
             return RedirectToAction("Index");
         }
@@ -121,6 +129,14 @@ namespace PrzeplywDokumentowWFirmie.Controllers
                 db.dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void IsLoggedIn()
+        {
+            if (!Request.IsAuthenticated)
+            {
+                Response.Redirect("Account/Login");
+            }
         }
     }
 }

@@ -21,6 +21,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Orders
         public ActionResult Index()
         {
+            this.IsLoggedIn();
             var orders = db.getOrders().OrderByDescending(or => or.StateName).ToList();
 
             // state is stored in enum StateName
@@ -36,6 +37,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Orders/Details/5
         public ActionResult Details(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -56,6 +58,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Orders/Create
         public ActionResult Create()
         {
+            this.IsLoggedIn();
             ViewBag.FirmId = new SelectList(db.getFirms(), "FirmId", "Name");
             ViewBag.WarehouseId = new SelectList(db.getWarehouses(), "WarehouseId", "Name");
             return View();
@@ -66,6 +69,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "OrderId,Name,FirmId,WarehouseId")] Order order)
         {
+            this.IsLoggedIn();
             if (ModelState.IsValid)
             {
                 db.addOrder(order);
@@ -81,6 +85,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Orders/Edit/5
         public ActionResult Edit(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -113,6 +118,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "OrderId,Name,FirmId,WarehouseId")] Order order)
         {
+            this.IsLoggedIn();
             if (ModelState.IsValid)
             {
                 // after successful editing order it becomes accepted (after clicking accept order)
@@ -132,6 +138,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: Orders/Delete/5
         public ActionResult Delete(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -149,6 +156,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            this.IsLoggedIn();
             db.deleteOrder(id);
             return RedirectToAction("Index");
         }
@@ -164,6 +172,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
 
         public ActionResult RealizeOrder(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -208,7 +217,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
                     if (_commodity.ConsumableItem != null)
                         itemName = _commodity.ConsumableItem.Name;
 
-                    string message = "<br>" + _commodity.Quantity + " of " + itemName + " is missing";
+                    string message = "<br>" + _commodity.Quantity + " pieces of " + itemName + " are missing";
                     notEnoughCommodities += message;
                 }
             }
@@ -216,7 +225,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
             // checks if there were any problems with finishing order
             if (notEnoughCommodities.Length != 0)
             {
-                IHtmlString message = new HtmlString(notEnoughCommodities);
+                IHtmlString message = new HtmlString(order.Name + " cannot be realised: " + notEnoughCommodities);
                 TempData["NotEnoughCommodities"] = message;
                 return RedirectToAction("Index");
             }
@@ -238,6 +247,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
 
         public ActionResult Invoice(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -262,6 +272,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         }
         public FileResult DownloadInvoice(int id, bool domestic)
         {
+            this.IsLoggedIn();
             Order order = db.findOrder((int)id);
             order.TransitionTo(order.StateName);
 
@@ -280,6 +291,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         //Returns a PDF file generated from given HTML code
         private byte[] PdfSharpConvert(string html)
         {
+            this.IsLoggedIn();
             byte[] res = null;
             using (MemoryStream ms = new MemoryStream())
             {
@@ -288,6 +300,14 @@ namespace PrzeplywDokumentowWFirmie.Controllers
                 res = ms.ToArray();
             }
             return res;
+        }
+
+        private void IsLoggedIn()
+        {
+            if (!Request.IsAuthenticated)
+            {
+                Response.Redirect("Account/Login");
+            }
         }
     }
 }

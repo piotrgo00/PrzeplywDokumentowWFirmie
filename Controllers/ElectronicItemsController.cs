@@ -20,12 +20,14 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: ElectronicItems
         public ActionResult Index()
         {
+            this.IsLoggedIn();
             return View(db.getElectronicItems().ToList());
         }
 
         // GET: ElectronicItems/Details/5
         public ActionResult Details(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -41,6 +43,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: ElectronicItems/Create
         public ActionResult Create()
         {
+            this.IsLoggedIn();
             return View(new ElectronicItem());
         }
 
@@ -51,6 +54,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ElectronicItemId,Name,IsUsed,Price")] ElectronicItem electronicItem)
         {
+            this.IsLoggedIn();
             if (ModelState.IsValid)
             {
                 FMConector.addItem(new ElectronicItemCreator(), electronicItem);
@@ -63,6 +67,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: ElectronicItems/Edit/5
         public ActionResult Edit(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -82,6 +87,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ElectronicItemId,Name,IsUsed,Price")] ElectronicItem electronicItem)
         {
+            this.IsLoggedIn();
             if (ModelState.IsValid)
             {
                 FMConector.editItem(new ElectronicItemCreator(), electronicItem);
@@ -93,6 +99,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         // GET: ElectronicItems/Delete/5
         public ActionResult Delete(int? id)
         {
+            this.IsLoggedIn();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -110,6 +117,7 @@ namespace PrzeplywDokumentowWFirmie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            this.IsLoggedIn();
             FMConector.deleteItem(new ElectronicItemCreator(), id);
             return RedirectToAction("Index");
         }
@@ -121,6 +129,14 @@ namespace PrzeplywDokumentowWFirmie.Controllers
                 db.dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void IsLoggedIn()
+        {
+            if (!Request.IsAuthenticated)
+            {
+                Response.Redirect("Account/Login");
+            }
         }
     }
 }

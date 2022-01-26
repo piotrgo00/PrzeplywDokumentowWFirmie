@@ -9,7 +9,7 @@ namespace PrzeplywDokumentowWFirmie.Models
     public class Warehouse
     {
         public int WarehouseId { get; set; }
-        [DisplayName("Warehouse")]
+        [DisplayName("Warehouse Name")]
         public string Name { get; set; }
         public virtual ICollection<Commodity> Commodities { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
